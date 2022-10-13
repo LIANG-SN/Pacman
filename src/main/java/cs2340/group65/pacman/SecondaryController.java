@@ -1,7 +1,8 @@
-package pacman;
+package cs2340.group65.pacman;
+
+import javafx.fxml.FXML;
 
 import java.io.IOException;
-import javafx.fxml.FXML;
 
 public class SecondaryController {
 

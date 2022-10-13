@@ -1,4 +1,4 @@
-package pacman;
+package cs2340.group65.pacman;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
