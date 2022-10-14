@@ -3,6 +3,7 @@ package cs2340.group65.pacman;
 import javafx.scene.image.ImageView;
 
 class Pacman extends ImageView {
+    private int score = 0;
 
     public Pacman(Coordinate initialCoordinate) {
         super("file:src/main/resources/cs2340/group65/pacman/images/pacman.gif");
@@ -38,5 +39,13 @@ class Pacman extends ImageView {
             this.x = x;
             this.y = y;
         }
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

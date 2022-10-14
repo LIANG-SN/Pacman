@@ -91,16 +91,17 @@ class GameScreenController {
     private void initPlayerInfoBar(String playerName) {
         HBox playerInfoBar = new HBox(20);
         Label playerNameLabel = new Label("Player: " + playerName);
+        Label scoreLabel = new Label("Score: " + pacman.getScore());
         Label playerLife = new Label("Life: 10");
         Label round = new Label("Round: One");
         playerInfoBar.setAlignment(Pos.TOP_LEFT);
-        playerInfoBar.getChildren().addAll(playerNameLabel, playerLife, round);
+        playerInfoBar.getChildren().addAll(playerNameLabel, scoreLabel, playerLife, round);
         root.getChildren().add(playerInfoBar);
     }
 
     private void initPauseButton() {
         Button pauseButton = new Button("Pause");
-        pauseButton.setTranslateX(maze.getWidth() / 2);
+        pauseButton.setTranslateX(maze.getWidth() / 2 + 10);
         pauseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
