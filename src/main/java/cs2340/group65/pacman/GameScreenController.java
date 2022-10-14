@@ -4,22 +4,23 @@ import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import  javafx.scene.Group;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import  javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
 class GameScreenController {
-    private boolean keyUp, keyDown, keyLeft, keyRight;
-    Stage stage;
-    AnimationTimer timer;
+    private boolean keyUp;
+    private boolean keyDown;
+    private boolean keyLeft;
+    private boolean keyRight;
+    private AnimationTimer timer;
     private Pacman pacman;
     private Monster ghost;
     private Group root;
@@ -30,10 +31,10 @@ class GameScreenController {
     private int topBarHeight = 50;
     private boolean pause = false;
 
-    public GameScreenController (String playerName){
+    public GameScreenController(String playerName) {
         maze = new Maze(640, 640, 16, 16, 0, topBarHeight);
         root = new Group();
-        scene = new Scene(root, maze.getWidth(), maze.getHeight()+topBarHeight);
+        scene = new Scene(root, maze.getWidth(), maze.getHeight() + topBarHeight);
         App.setScene(scene);
         pacman = new Pacman(new Pacman.Coordinate(100, 100));
         ghost = new Monster(maze);
@@ -46,32 +47,48 @@ class GameScreenController {
         initTimer();
     }
 
-    private void initEventHandler(){
+    private void initEventHandler() {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                switch (event.getCode()){
-                    case UP:    keyUp    = true; break;
-                    case DOWN:  keyDown  = true; break;
-                    case LEFT:  keyLeft  = true; break;
-                    case RIGHT: keyRight = true; break;
+                switch (event.getCode()) {
+                    case UP:
+                        keyUp = true;
+                        break;
+                    case DOWN:
+                        keyDown = true;
+                        break;
+                    case LEFT:
+                        keyLeft = true;
+                        break;
+                    case RIGHT:
+                        keyRight = true;
+                        break;
                 }
             }
         });
         scene.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                switch (event.getCode()){
-                    case UP:    keyUp    = false; break;
-                    case DOWN:  keyDown  = false; break;
-                    case LEFT:  keyLeft  = false; break;
-                    case RIGHT: keyRight = false; break;
+                switch (event.getCode()) {
+                    case UP:
+                        keyUp = false;
+                        break;
+                    case DOWN:
+                        keyDown = false;
+                        break;
+                    case LEFT:
+                        keyLeft = false;
+                        break;
+                    case RIGHT:
+                        keyRight = false;
+                        break;
                 }
             }
         });
     }
-    private void initPlayerInfoBar(String playerName)
-    {
+
+    private void initPlayerInfoBar(String playerName) {
         HBox playerInfoBar = new HBox(20);
         Label playerNameLabel = new Label("Player: " + playerName);
         Label playerLife = new Label("Life: 10");
@@ -80,25 +97,29 @@ class GameScreenController {
         playerInfoBar.getChildren().addAll(playerNameLabel, playerLife, round);
         root.getChildren().add(playerInfoBar);
     }
-    private void initPauseButton(){
+
+    private void initPauseButton() {
         Button pauseButton = new Button("Pause");
         pauseButton.setTranslateX(maze.getWidth() / 2);
         pauseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
                 pause = !pause;
-                if (pause)
+                if (pause) {
                     pauseButton.setText("Continue");
-                else
+                }
+                else {
                     pauseButton.setText("Pause");
+                }
             }
         });
         pauseButton.setFocusTraversable(false);
         root.getChildren().add(pauseButton);
     }
-    private void initMainScreenButton(){
+
+    private void initMainScreenButton() {
         Button mainScreenButton = new Button("Main Screen");
-        mainScreenButton.setTranslateX(scene.getWidth()/2 + 80);
+        mainScreenButton.setTranslateX(scene.getWidth() / 2 + 80);
         mainScreenButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -108,7 +129,8 @@ class GameScreenController {
         mainScreenButton.setFocusTraversable(false);
         root.getChildren().add(mainScreenButton);
     }
-    private void initCanvas(int translateX, int translateY){
+
+    private void initCanvas(int translateX, int translateY) {
         Canvas canvas = new Canvas(maze.getWidth(), maze.getHeight());
         canvas.setTranslateX(translateX);
         canvas.setTranslateY(translateY);
@@ -116,22 +138,28 @@ class GameScreenController {
         graphicsContext = canvas.getGraphicsContext2D();
         graphicsContext.setLineWidth(2);
     }
-    private void initTimer(){
+
+    private void initTimer() {
         timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
 
-                if (!pause)
-                {
+                if (!pause) {
                     Pacman.Coordinate coordinate = pacman.getLocation();
-                    if (keyUp && coordinate.y > 0 + maze.getTranslateY())
+                    if (keyUp && coordinate.y > 0 + maze.getTranslateY()) {
                         pacman.moveUp();
-                    if (keyDown && coordinate.y < maze.getHeight() - maze.getCellSize() + maze.getTranslateY())
+                    }
+                    if (keyDown && coordinate.y < maze.getHeight()
+                            - maze.getCellSize() + maze.getTranslateY()) {
                         pacman.moveDown();
-                    if (keyLeft && coordinate.x > 0 + maze.getTranslateX())
+                    }
+                    if (keyLeft && coordinate.x > 0 + maze.getTranslateX()) {
                         pacman.moveLeft();
-                    if (keyRight && coordinate.x < maze.getWidth() - maze.getCellSize() + maze.getTranslateX())
+                    }
+                    if (keyRight && coordinate.x < maze.getWidth()
+                            - maze.getCellSize() + maze.getTranslateX()) {
                         pacman.moveRight();
+                    }
 
                     double pathStartX = ghost.getX() + maze.getCellSize() / 4;
                     double pathStartY = ghost.getY() - maze.getCellSize();
@@ -145,11 +173,10 @@ class GameScreenController {
         timer.start();
     }
 
-    private void switchToMainScreen()
-    {
-        try{
+    private void switchToMainScreen() {
+        try {
             App.setScene(new Scene(App.loadFXML("primary"), 640, 480));
-        }catch (IOException ioException){
+        } catch (IOException ioException) {
             System.out.println("IO exception occurs during load fxml");
         }
     }

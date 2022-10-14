@@ -16,7 +16,7 @@ public class Monster extends ImageView {
     private int changeDirectionCounter = 0;
 
 
-    public Monster (Maze maze) {
+    public Monster(Maze maze) {
         super("file:src/main/resources/cs2340/group65/pacman/images/BlueGhost.png");
         this.maze = maze;
         this.setPreserveRatio(false);
@@ -31,7 +31,7 @@ public class Monster extends ImageView {
     /**
      * Update the position of the Monster.
      */
-    public void update(){
+    public void update() {
         Bounds monsterBounds = getBoundsInParent();
         if (monsterBounds.getMaxX() > maze.getWidth() + maze.getTranslateX()) {
             xDirection *= -1.0;      // change x direction
@@ -46,23 +46,31 @@ public class Monster extends ImageView {
         setX(getX() + xDirection);   // move this monster
         setY(getY() + yDirection);
 
-        if(++changeDirectionCounter==10)
-        {
-            changeDirectionCounter=0;
-            if (Math.random() <= 0.4)
+        if (++changeDirectionCounter == 10) {
+            changeDirectionCounter = 0;
+            if (Math.random() <= 0.4) {
                 setRandomDirection();
+            }
         }
     }
-    public void setRandomDirection()
-    {
+
+    public void setRandomDirection() {
         xDirection = 0;
         yDirection = 0;
-        int randomDirection = (int)(Math.random() * 4);
-        switch (randomDirection){
-            case 0: xDirection = 2; break;
-            case 1: xDirection = -2; break;
-            case 2: yDirection = 2; break;
-            case 3: yDirection = -2; break;
+        int randomDirection = (int) (Math.random() * 4);
+        switch (randomDirection) {
+            case 0:
+                xDirection = 2;
+                break;
+            case 1:
+                xDirection = -2;
+                break;
+            case 2:
+                yDirection = 2;
+                break;
+            case 3:
+                yDirection = -2;
+                break;
         }
     }
 }
