@@ -21,6 +21,7 @@ class GameScreenController {
     private boolean keyUp, keyDown, keyLeft, keyRight;
     private Pacman pacman;
     private Monster ghost;
+    private Monster2 ghost2;
     private Group root;
     private Scene scene;
     private GraphicsContext graphicsContext;
@@ -33,6 +34,7 @@ class GameScreenController {
     public GameScreenController (int mazeHeight, int mazeWidth){
         pacman = new Pacman(new Pacman.Coordinate(0, 0));
         ghost = new Monster(mazeWidth, mazeHeight);
+        ghost2 = new Monster2(mazeWidth, mazeHeight);
         this.mazeHeight = mazeHeight;
         this.mazeWidth = mazeWidth;
         assert mazeHeight / numRows == mazeWidth / numColumns;
@@ -43,7 +45,7 @@ class GameScreenController {
         scene = new Scene(root,mazeHeight + topBarHeight, mazeWidth);
         stage.setScene(scene);
 
-        root.getChildren().add(ghost);
+        root.getChildren().addAll(ghost, ghost2);
         initPlayerInfoBar();
         initPauseButton();
         initCanvas(0, topBarHeight);
@@ -123,6 +125,7 @@ class GameScreenController {
                     if (keyRight && coordinate.x < mazeWidth - (int)(mazeWidth/numColumns)) pacman.moveRight();
 
                     ghost.update();
+                    ghost2.update();
 
                     graphicsContext.clearRect(0, 0,640,  640);
                     drawPacman();
