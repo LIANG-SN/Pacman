@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,9 +21,13 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
         mStage = stage;
         scene = new Scene(loadFXML("primary"), 640, 480);
         gameScreenController = new GameScreenController(640, 640);
+
+        stage.setTitle("PacMan Game");
+
         stage.setScene(scene);
         stage.show();
     }
@@ -38,6 +43,11 @@ public class App extends Application {
     public static void startGameScreen() throws  IOException{
         gameScreenController.init(mStage);
     }
+
+    static void setRoot(VBox root) throws IOException {
+        scene.setRoot(root);
+    }
+
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));

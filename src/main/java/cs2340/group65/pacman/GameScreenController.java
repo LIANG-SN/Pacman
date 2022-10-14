@@ -3,13 +3,16 @@ package cs2340.group65.pacman;
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import  javafx.scene.Group;
 import javafx.scene.Scene;
 import  javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,6 +20,7 @@ import java.io.IOException;
 class GameScreenController {
     private boolean keyUp, keyDown, keyLeft, keyRight;
     private Pacman pacman;
+    private Monster ghost;
     private Group root;
     private Scene scene;
     private GraphicsContext graphicsContext;
@@ -28,6 +32,7 @@ class GameScreenController {
 
     public GameScreenController (int mazeHeight, int mazeWidth){
         pacman = new Pacman(new Pacman.Coordinate(0, 0));
+        ghost = new Monster(mazeWidth, mazeHeight);
         this.mazeHeight = mazeHeight;
         this.mazeWidth = mazeWidth;
         assert mazeHeight / numRows == mazeWidth / numColumns;
@@ -38,6 +43,8 @@ class GameScreenController {
         scene = new Scene(root,mazeHeight + topBarHeight, mazeWidth);
         stage.setScene(scene);
 
+        root.getChildren().add(ghost);
+        initPlayerInfoBar();
         initPauseButton();
         initCanvas(0, topBarHeight);
         initImages();
@@ -68,6 +75,16 @@ class GameScreenController {
                 }
             }
         });
+    }
+    private void initPlayerInfoBar()
+    {
+        HBox playerInfoBar = new HBox(20);
+        Label playerName = new Label("Player's name");
+        Label playerLife = new Label("Life: 10");
+        Label round = new Label("Round: One");
+        playerInfoBar.setAlignment(Pos.TOP_LEFT);
+        playerInfoBar.getChildren().addAll(playerName, playerLife, round);
+        root.getChildren().add(playerInfoBar);
     }
     private void initPauseButton(){
         Button pauseButton = new Button("Pause");
@@ -105,8 +122,11 @@ class GameScreenController {
                     if (keyLeft && coordinate.x > 0) pacman.moveLeft();
                     if (keyRight && coordinate.x < mazeWidth - (int)(mazeWidth/numColumns)) pacman.moveRight();
 
+                    ghost.update();
+
                     graphicsContext.clearRect(0, 0,640,  640);
                     drawPacman();
+
                 }
             }
         };
