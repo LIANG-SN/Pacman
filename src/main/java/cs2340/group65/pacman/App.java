@@ -32,13 +32,16 @@ public class App extends Application {
     }
 
     public static void startGameScreen() throws IOException {
-        gameScreenController = new GameScreenController("Default name");
+        gameScreenController = new GameScreenController("Default name",
+                "src/main/resources/cs2340/group65/pacman/images/pacman.gif",
+                10);
     }
 
     public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
+
     public static void setScene(Scene setScene) {
         scene = setScene;
         thisStage.setScene(scene);

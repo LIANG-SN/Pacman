@@ -31,12 +31,13 @@ class GameScreenController {
     private int topBarHeight = 50;
     private boolean pause = false;
 
-    public GameScreenController(String playerName) {
+    public GameScreenController(String playerName, String playerImagePath,
+                                int playerLifes) {
         maze = new Maze(640, 640, 16, 16, 0, topBarHeight);
         root = new Group();
         scene = new Scene(root, maze.getWidth(), maze.getHeight() + topBarHeight);
         App.setScene(scene);
-        pacman = new Pacman(new Pacman.Coordinate(100, 100));
+        pacman = new Pacman(new Pacman.Coordinate(100, 100), playerImagePath, playerLifes);
         ghost = new Monster(maze);
         root.getChildren().addAll(ghost, pacman);
         initPlayerInfoBar(playerName);
@@ -92,7 +93,7 @@ class GameScreenController {
         HBox playerInfoBar = new HBox(20);
         Label playerNameLabel = new Label("Player: " + playerName);
         Label scoreLabel = new Label("Score: " + pacman.getScore());
-        Label playerLife = new Label("Life: 10");
+        Label playerLife = new Label("Life: " + pacman.getPlayerLifes());
         Label round = new Label("Round: One");
         playerInfoBar.setAlignment(Pos.TOP_LEFT);
         playerInfoBar.getChildren().addAll(playerNameLabel, scoreLabel, playerLife, round);

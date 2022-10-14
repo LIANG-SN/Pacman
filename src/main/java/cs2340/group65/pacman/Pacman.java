@@ -4,11 +4,13 @@ import javafx.scene.image.ImageView;
 
 class Pacman extends ImageView {
     private int score = 0;
+    private int playerLifes;
 
-    public Pacman(Coordinate initialCoordinate) {
-        super("file:src/main/resources/cs2340/group65/pacman/images/pacman.gif");
+    public Pacman(Coordinate initialCoordinate, String imagePath, int playerLifes) {
+        super("file:" + imagePath);
         setX(initialCoordinate.x);
         setY(initialCoordinate.y);
+        this.playerLifes = playerLifes;
     }
 
     public void moveUp() {
@@ -47,5 +49,9 @@ class Pacman extends ImageView {
 
     public int getScore() {
         return score;
+    }
+
+    public int getPlayerLifes() {
+        return playerLifes;
     }
 }
