@@ -41,7 +41,7 @@ public class App extends Application {
     }
 
     public static void startGameScreen() throws  IOException{
-        gameScreenController.init(mStage);
+        gameScreenController.init(mStage, "Default name");
     }
 
     static void setRoot(VBox root) throws IOException {
@@ -52,6 +52,10 @@ public class App extends Application {
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
+    }
+    public static void switchToMainScene()
+    {
+        mStage.setScene(scene);
     }
 
     public static void main(String[] args) {

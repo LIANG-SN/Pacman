@@ -19,6 +19,8 @@ import java.io.IOException;
 
 class GameScreenController {
     private boolean keyUp, keyDown, keyLeft, keyRight;
+    Stage stage;
+    AnimationTimer timer;
     private Pacman pacman;
     private Monster ghost;
     private Monster2 ghost2;
@@ -29,27 +31,30 @@ class GameScreenController {
     private Image pacmanImage;
     private int mazeWidth, mazeHeight;
     private int numRows = 16, numColumns = 16;
+    private int topBarHeight = 50;
     private boolean pause = false;
 
     public GameScreenController (int mazeHeight, int mazeWidth){
-        pacman = new Pacman(new Pacman.Coordinate(0, 0));
-        ghost = new Monster(mazeWidth, mazeHeight);
-        ghost2 = new Monster2(mazeWidth, mazeHeight);
         this.mazeHeight = mazeHeight;
         this.mazeWidth = mazeWidth;
         assert mazeHeight / numRows == mazeWidth / numColumns;
     }
-    public void init(Stage stage) throws IOException {
+    public void init(Stage stage, String playerName) throws IOException {
         root = new Group();
-        int topBarHeight = 50;
-        scene = new Scene(root,mazeHeight + topBarHeight, mazeWidth);
+        scene = new Scene(root, mazeWidth, mazeHeight+topBarHeight);
+        this.stage = stage;
         stage.setScene(scene);
 
-        root.getChildren().addAll(ghost, ghost2);
-        initPlayerInfoBar();
+        pacman = new Pacman(new Pacman.Coordinate(0, 0));
+        ghost = new Monster(mazeWidth, mazeHeight);
+        ghost2 = new Monster2(mazeWidth, mazeHeight,
+                0, topBarHeight, getCellSize());
+
+        root.getChildren().addAll(ghost, ghost2, pacman);
+        initPlayerInfoBar(playerName);
         initPauseButton();
+        initMainScreenButton();
         initCanvas(0, topBarHeight);
-        initImages();
         initEventHandler();
         initTimer();
     }
@@ -78,14 +83,14 @@ class GameScreenController {
             }
         });
     }
-    private void initPlayerInfoBar()
+    private void initPlayerInfoBar(String playerName)
     {
         HBox playerInfoBar = new HBox(20);
-        Label playerName = new Label("Player's name");
+        Label playerNameLabel = new Label("Player: " + playerName);
         Label playerLife = new Label("Life: 10");
         Label round = new Label("Round: One");
         playerInfoBar.setAlignment(Pos.TOP_LEFT);
-        playerInfoBar.getChildren().addAll(playerName, playerLife, round);
+        playerInfoBar.getChildren().addAll(playerNameLabel, playerLife, round);
         root.getChildren().add(playerInfoBar);
     }
     private void initPauseButton(){
@@ -104,15 +109,28 @@ class GameScreenController {
         pauseButton.setFocusTraversable(false);
         root.getChildren().add(pauseButton);
     }
+    private void initMainScreenButton(){
+        Button mainScreenButton = new Button("Main Screen");
+        mainScreenButton.setTranslateX(mazeWidth/2 + 80);
+        mainScreenButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                switchToMainScreen();
+            }
+        });
+        mainScreenButton.setFocusTraversable(false);
+        root.getChildren().add(mainScreenButton);
+    }
     private void initCanvas(int translateX, int translateY){
         Canvas canvas = new Canvas(mazeHeight, mazeWidth);
         canvas.setTranslateX(translateX);
         canvas.setTranslateY(translateY);
         root.getChildren().add(canvas);
         graphicsContext = canvas.getGraphicsContext2D();
+        graphicsContext.setLineWidth(2);
     }
     private void initTimer(){
-        AnimationTimer timer = new AnimationTimer() {
+        timer = new AnimationTimer() {
             @Override
             public void handle(long l) {
 
@@ -125,23 +143,27 @@ class GameScreenController {
                     if (keyRight && coordinate.x < mazeWidth - (int)(mazeWidth/numColumns)) pacman.moveRight();
 
                     ghost.update();
+                    double pathStartX = ghost2.getX() + getCellSize() / 4;
+                    double pathStartY = ghost2.getY() - getCellSize();
                     ghost2.update();
-
-                    graphicsContext.clearRect(0, 0,640,  640);
-                    drawPacman();
-
+                    double pathEndX = ghost2.getX() + getCellSize() / 4;
+                    double pathEndY = ghost2.getY() - getCellSize();
+                    graphicsContext.strokeLine(pathStartX, pathStartY, pathEndX, pathEndY);
                 }
             }
         };
         timer.start();
     }
-    private void initImages(){
-        int cellSize = (int)(mazeHeight / numRows);
-        wallImage = new Image(getClass().getResourceAsStream("images/brick_wall.png"), cellSize, cellSize, false, false);
-        pacmanImage = new Image(getClass().getResourceAsStream("images/pacman.gif"), cellSize, cellSize, false, false);
-    }
-    public void drawPacman(){
-        Pacman.Coordinate coordinate = pacman.getLocation();
-        graphicsContext.drawImage(pacmanImage, coordinate.x, coordinate.y);
+    private double getCellSize() { return mazeHeight / numRows;}
+    private void switchToMainScreen()
+    {
+        timer.stop();
+        App.switchToMainScene();
+        try{
+            App.setRoot("primary");
+        }catch (IOException ioException){
+            System.out.println("IO exception occurs App setRoot function");
+        }
+
     }
 }

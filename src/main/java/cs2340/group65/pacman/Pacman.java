@@ -1,25 +1,28 @@
 package cs2340.group65.pacman;
 
-class Pacman {
+import javafx.scene.image.ImageView;
+
+class Pacman extends ImageView {
     public static class Coordinate{
-        int x;
-        int y;
-        public Coordinate(int x, int y){
+        double x;
+        double y;
+        public Coordinate(double x, double y){
             this.x=x;
             this.y=y;
         }
     }
-    private Coordinate coordinate;
     public Pacman(Coordinate initialCoordinate)
     {
-        coordinate = initialCoordinate;
+        super("file:src/main/resources/cs2340/group65/pacman/images/pacman.gif");
+        setX(initialCoordinate.x);
+        setY(initialCoordinate.y);
     }
 
-    public void moveUp(){ coordinate.y -= 2; }
-    public void moveDown(){ coordinate.y += 2; }
-    public void moveLeft() { coordinate.x -= 2; }
-    public void moveRight() { coordinate.x += 2; }
+    public void moveUp(){ setY(getY() - 2); }
+    public void moveDown(){ setY(getY() + 2); }
+    public void moveLeft() { setX(getX() - 2); }
+    public void moveRight() { setX(getX() + 2); }
     public Coordinate getLocation(){
-        return coordinate;
+        return new Coordinate(getX(), getY());
     }
 }
