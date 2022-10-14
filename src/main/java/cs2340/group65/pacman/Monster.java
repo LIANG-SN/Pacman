@@ -2,7 +2,7 @@ package cs2340.group65.pacman;
 
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Region;
+
 
 public class Monster extends ImageView {
     private double xDirection;
