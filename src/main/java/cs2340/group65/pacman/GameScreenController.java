@@ -10,7 +10,6 @@ import  javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -23,34 +22,22 @@ class GameScreenController {
     AnimationTimer timer;
     private Pacman pacman;
     private Monster ghost;
-    private Monster2 ghost2;
     private Group root;
     private Scene scene;
     private GraphicsContext graphicsContext;
-    private Image wallImage;
-    private Image pacmanImage;
-    private int mazeWidth, mazeHeight;
-    private int numRows = 16, numColumns = 16;
+    private Maze maze;
+
     private int topBarHeight = 50;
     private boolean pause = false;
 
-    public GameScreenController (int mazeHeight, int mazeWidth){
-        this.mazeHeight = mazeHeight;
-        this.mazeWidth = mazeWidth;
-        assert mazeHeight / numRows == mazeWidth / numColumns;
-    }
-    public void init(Stage stage, String playerName) throws IOException {
+    public GameScreenController (String playerName){
+        maze = new Maze(640, 640, 16, 16, 0, topBarHeight);
         root = new Group();
-        scene = new Scene(root, mazeWidth, mazeHeight+topBarHeight);
-        this.stage = stage;
-        stage.setScene(scene);
-
-        pacman = new Pacman(new Pacman.Coordinate(0, 0));
-        ghost = new Monster(mazeWidth, mazeHeight);
-        ghost2 = new Monster2(mazeWidth, mazeHeight,
-                0, topBarHeight, getCellSize());
-
-        root.getChildren().addAll(ghost, ghost2, pacman);
+        scene = new Scene(root, maze.getWidth(), maze.getHeight()+topBarHeight);
+        App.setScene(scene);
+        pacman = new Pacman(new Pacman.Coordinate(100, 100));
+        ghost = new Monster(maze);
+        root.getChildren().addAll(ghost, pacman);
         initPlayerInfoBar(playerName);
         initPauseButton();
         initMainScreenButton();
@@ -95,7 +82,7 @@ class GameScreenController {
     }
     private void initPauseButton(){
         Button pauseButton = new Button("Pause");
-        pauseButton.setTranslateX(mazeWidth / 2);
+        pauseButton.setTranslateX(maze.getWidth() / 2);
         pauseButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -111,7 +98,7 @@ class GameScreenController {
     }
     private void initMainScreenButton(){
         Button mainScreenButton = new Button("Main Screen");
-        mainScreenButton.setTranslateX(mazeWidth/2 + 80);
+        mainScreenButton.setTranslateX(scene.getWidth()/2 + 80);
         mainScreenButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -122,7 +109,7 @@ class GameScreenController {
         root.getChildren().add(mainScreenButton);
     }
     private void initCanvas(int translateX, int translateY){
-        Canvas canvas = new Canvas(mazeHeight, mazeWidth);
+        Canvas canvas = new Canvas(maze.getWidth(), maze.getHeight());
         canvas.setTranslateX(translateX);
         canvas.setTranslateY(translateY);
         root.getChildren().add(canvas);
@@ -137,33 +124,33 @@ class GameScreenController {
                 if (!pause)
                 {
                     Pacman.Coordinate coordinate = pacman.getLocation();
-                    if (keyUp && coordinate.y > 0) pacman.moveUp();
-                    if (keyDown && coordinate.y < mazeHeight - (int)(mazeHeight/numRows)) pacman.moveDown();
-                    if (keyLeft && coordinate.x > 0) pacman.moveLeft();
-                    if (keyRight && coordinate.x < mazeWidth - (int)(mazeWidth/numColumns)) pacman.moveRight();
+                    if (keyUp && coordinate.y > 0 + maze.getTranslateY())
+                        pacman.moveUp();
+                    if (keyDown && coordinate.y < maze.getHeight() - maze.getCellSize() + maze.getTranslateY())
+                        pacman.moveDown();
+                    if (keyLeft && coordinate.x > 0 + maze.getTranslateX())
+                        pacman.moveLeft();
+                    if (keyRight && coordinate.x < maze.getWidth() - maze.getCellSize() + maze.getTranslateX())
+                        pacman.moveRight();
 
+                    double pathStartX = ghost.getX() + maze.getCellSize() / 4;
+                    double pathStartY = ghost.getY() - maze.getCellSize();
                     ghost.update();
-                    double pathStartX = ghost2.getX() + getCellSize() / 4;
-                    double pathStartY = ghost2.getY() - getCellSize();
-                    ghost2.update();
-                    double pathEndX = ghost2.getX() + getCellSize() / 4;
-                    double pathEndY = ghost2.getY() - getCellSize();
+                    double pathEndX = ghost.getX() + maze.getCellSize() / 4;
+                    double pathEndY = ghost.getY() - maze.getCellSize();
                     graphicsContext.strokeLine(pathStartX, pathStartY, pathEndX, pathEndY);
                 }
             }
         };
         timer.start();
     }
-    private double getCellSize() { return mazeHeight / numRows;}
+
     private void switchToMainScreen()
     {
-        timer.stop();
-        App.switchToMainScene();
         try{
-            App.setRoot("primary");
+            App.setScene(new Scene(App.loadFXML("primary"), 640, 480));
         }catch (IOException ioException){
-            System.out.println("IO exception occurs App setRoot function");
+            System.out.println("IO exception occurs during load fxml");
         }
-
     }
 }
