@@ -1,5 +1,5 @@
 package cs2340.group65.pacman;
-import javafx.application.Application;
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -15,15 +15,15 @@ import javafx.scene.text.FontWeight;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class WelcomeScreen extends Application {
+public class WelcomeScreen {
     private BorderPane root;
-    
-    @Override
-    public void start(Stage primaryStage) {
+
+    public Stage display() throws IOException {
         Button start = new Button("Start Game");
         Font font1 = Font.font("Courier New", FontWeight.BOLD, 36);
         start.setFont(font1);
@@ -36,7 +36,7 @@ public class WelcomeScreen extends Application {
 
         InputStream stream = null;
         try {
-            stream = new FileInputStream("pacman.gif");
+            stream = new FileInputStream("src/main/resources/cs2340/group65/pacman/images/pacman.gif");
             Image image = new Image(stream);
             ImageView imageView = new ImageView();
             imageView.setImage(image);
@@ -76,12 +76,11 @@ public class WelcomeScreen extends Application {
     }});
 
         Scene scene = new Scene(root, 600, 600);
+        Stage primaryStage = new Stage();
         primaryStage.setScene(scene);
         primaryStage.setTitle("Play PACMAN");
-        primaryStage.show();
+        return primaryStage;
     }
-    public static void main(String[] args) {
-        launch(args);
-    }
-    
+
+
 }
