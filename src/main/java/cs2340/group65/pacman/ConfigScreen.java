@@ -21,7 +21,7 @@ public class ConfigScreen {
      * config screen setup
      * @return new stage to display
      */
-    public Stage display() {
+    public Stage display() throws IOException {
         //creating gridPane size(col:3 row:4) index(colIndex:2 rowIndex:3)
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(25, 25, 25, 25));
@@ -30,7 +30,7 @@ public class ConfigScreen {
         grid.setAlignment(Pos.CENTER);
         //creating config menu
         Label label = new Label("WELCOME!");
-        Image pacman = new Image(new FileInputStream("{path Var}")); //replace {} with image path variable
+        Image pacman = new Image(new FileInputStream("src/main/resources/cs2340/group65/pacman/pacman.png")); //replace {} with image path variable
         ImageView window = new ImageView(pacman);//set height/width if needed
         Button prevBtn = new Button("<-");
         Button nextBtn = new Button("->");
@@ -52,13 +52,13 @@ public class ConfigScreen {
         backBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                App.setRoot("{previous screen}");//using xml, replace {} when ready
+                //App.setRoot("{previous screen}");//using xml, replace {} when ready
             }
         });
         playBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                App.setRoot("{next screen}");//using xml, replace {} when ready
+                //App.setRoot("{next screen}");//using xml, replace {} when ready
             }
         });
         //adding elements to grid pane
