@@ -1,5 +1,7 @@
 package cs2340.group65.pacman;
 import javafx.application.Application;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -10,6 +12,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -28,6 +34,18 @@ public class WelcomeScreen extends Application {
         root.setCenter(start);
         root.setBottom(quit);
 
+        InputStream stream = null;
+        try {
+            stream = new FileInputStream("pacman.gif");
+            Image image = new Image(stream);
+            ImageView imageView = new ImageView();
+            imageView.setImage(image);
+            imageView.setFitWidth(100);
+            imageView.setPreserveRatio(true);
+            root.setTop(imageView);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         start.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent e) {
