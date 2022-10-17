@@ -23,7 +23,7 @@ import java.util.TimerTask;
 public class WelcomeScreen {
     private BorderPane root;
 
-    public Stage display() throws IOException {
+    public void display() throws IOException {
         Button start = new Button("Start Game");
         Font font1 = Font.font("Courier New", FontWeight.BOLD, 36);
         start.setFont(font1);
@@ -56,6 +56,7 @@ public class WelcomeScreen {
                 t.setFill(Color.DARKRED);
                 load.setCenter(t);
                 root.setCenter(load);
+                App.startConfigurationScreen();
 
                 
     }});
@@ -76,10 +77,11 @@ public class WelcomeScreen {
     }});
 
         Scene scene = new Scene(root, 600, 600);
-        Stage primaryStage = new Stage();
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Play PACMAN");
-        return primaryStage;
+        App.setScene(scene);
+//        Stage primaryStage = new Stage();
+//        primaryStage.setScene(scene);
+//        primaryStage.setTitle("Play PACMAN");
+//        return primaryStage;
     }
 
 

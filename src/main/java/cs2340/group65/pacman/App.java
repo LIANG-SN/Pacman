@@ -16,26 +16,48 @@ public class App extends Application {
     private static Scene scene;
     private static Stage thisStage;
     private static GameScreenController gameScreenController;
+    private static WelcomeScreen welcomeScreen;
+    private static ConfigurationScreen configurationScreen;
 
     @Override
     public void start(Stage stage) throws IOException {
 
         thisStage = stage;
-        scene = new Scene(loadFXML("primary"), 640, 480);
+//        scene = new Scene(loadFXML("primary"), 640, 480);
+        welcomeScreen = new WelcomeScreen();
+        welcomeScreen.display();
+        configurationScreen = new ConfigurationScreen();
         stage.setTitle("PacMan Game");
-        stage.setScene(scene);
+//        stage.setScene(scene);
         thisStage.show();
     }
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
+    public static void startWelcomeScreen() {
+        try{
+            welcomeScreen.display();
+        } catch (IOException ioException){
+            System.out.println("io exception occurs during starting welcome screen.");
+        }
 
-    public static void startGameScreen() throws IOException {
-        gameScreenController = new GameScreenController("Default name",
-                "src/main/resources/cs2340/group65/pacman/images/pacman.gif",
-                10);
     }
+    public static void startConfigurationScreen() {
+        try{
+            configurationScreen.start();
+        } catch (IOException ioException){
+            System.out.println("io exception occurs during starting config screen.");
+        }
+    }
+
+    public static void startGameScreen(String playerName,
+                                       String playerImagePath,
+                                       int playerLifes) {
+        gameScreenController = new GameScreenController(playerName,
+                playerImagePath, playerLifes);
+    }
+
 
     public static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));

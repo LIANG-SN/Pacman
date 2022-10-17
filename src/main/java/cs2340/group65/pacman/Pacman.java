@@ -5,12 +5,17 @@ import javafx.scene.image.ImageView;
 class Pacman extends ImageView {
     private int score = 0;
     private int playerLifes;
+    private Maze maze;
 
-    public Pacman(Coordinate initialCoordinate, String imagePath, int playerLifes) {
+    public Pacman(Coordinate initialCoordinate, String imagePath, int playerLifes, Maze maze) {
         super("file:" + imagePath);
         setX(initialCoordinate.x);
         setY(initialCoordinate.y);
         this.playerLifes = playerLifes;
+        this.maze = maze;
+        setPreserveRatio(false);
+        setFitWidth(maze.getCellSize());
+        setFitHeight(maze.getCellSize());
     }
 
     public void moveUp() {

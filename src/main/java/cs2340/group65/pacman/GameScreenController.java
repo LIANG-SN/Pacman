@@ -37,7 +37,7 @@ class GameScreenController {
         root = new Group();
         scene = new Scene(root, maze.getWidth(), maze.getHeight() + topBarHeight);
         App.setScene(scene);
-        pacman = new Pacman(new Pacman.Coordinate(100, 100), playerImagePath, playerLifes);
+        pacman = new Pacman(new Pacman.Coordinate(100, 100), playerImagePath, playerLifes, maze);
         ghost = new Monster(maze);
         root.getChildren().addAll(ghost, pacman);
         initPlayerInfoBar(playerName);
@@ -120,7 +120,7 @@ class GameScreenController {
     }
 
     private void initMainScreenButton() {
-        Button mainScreenButton = new Button("Main Screen");
+        Button mainScreenButton = new Button("Back");
         mainScreenButton.setTranslateX(scene.getWidth() / 2 + 80);
         mainScreenButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -176,10 +176,6 @@ class GameScreenController {
     }
 
     private void switchToMainScreen() {
-        try {
-            App.setScene(new Scene(App.loadFXML("primary"), 640, 480));
-        } catch (IOException ioException) {
-            System.out.println("IO exception occurs during load fxml");
-        }
+            App.startConfigurationScreen();
     }
 }

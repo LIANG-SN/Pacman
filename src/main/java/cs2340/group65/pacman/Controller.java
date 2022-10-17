@@ -11,8 +11,8 @@ public class Controller {
         App.setRoot("secondary");
     }
 
-    @FXML
-    private void switchToGame() throws IOException {
-        App.startGameScreen();
-    }
+//    @FXML
+//    private void switchToGame() throws IOException {
+//        App.startGameScreen();
+//    }
 }

@@ -21,13 +21,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.control.Label;
 
-public class ConfigurationScreen extends Application {
+public class ConfigurationScreen {
     private String name;
     private String difficulty;
     private int startingLives;
     private String pacmanImageSelected;
 
-    public void start(Stage stage) throws IOException {
+    public void start() throws IOException {
         //creating gridPane size(col:3 row:4) index(colIndex:2 rowIndex:3)
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(25, 25, 25, 25));
@@ -165,7 +165,7 @@ public class ConfigurationScreen extends Application {
         backBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //App.setRoot("{previous screen}");//using xml, replace {} when ready
+                App.startWelcomeScreen();
             }
         });
 
@@ -180,6 +180,11 @@ public class ConfigurationScreen extends Application {
                     if (name == null || name.isBlank() || difficulty == null || pacmanImageSelected == null) {
                         throw new Exception();
                     }
+                    String color = pacmanImageSelected.split("\\s+")[0];
+                    color = color.toLowerCase();
+                    String imagePath = "src/main/resources/cs2340/group65/pacman/" + color + "Pacman.png";
+                    System.out.println(imagePath);
+                    App.startGameScreen(name, imagePath, startingLives);
                 } catch (Exception e) {
                     Alert a = new Alert(Alert.AlertType.ERROR);
                     a.setTitle("Error");
@@ -196,8 +201,7 @@ public class ConfigurationScreen extends Application {
         grid.add(playBtn, 2, 5);
         //creating scene
         Scene scene = new Scene(grid);
-        stage.setScene(scene);
-        stage.show();
+        App.setScene(scene);
     }
 
     public String newUserSelection() {
