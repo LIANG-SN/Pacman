@@ -16,15 +16,15 @@ public class Monster extends ImageView {
     private int changeDirectionCounter = 0;
 
 
-    public Monster(Maze maze) {
+    public Monster(Maze maze, Coordinate startLocation) {
         super("file:src/main/resources/cs2340/group65/pacman/images/BlueGhost.png");
         this.maze = maze;
         this.setPreserveRatio(false);
         this.setFitWidth(maze.getCellSize());
         this.setFitHeight(maze.getCellSize());
         // temp location
-        setX(maze.getWidth() / 2 + maze.getTranslateX());
-        setY(maze.getHeight() / 2 + maze.getTranslateY());
+        setX(startLocation.x + maze.getTranslateX());
+        setY(startLocation.y + maze.getTranslateY());
         setRandomDirection();
     }
 

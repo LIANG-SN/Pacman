@@ -180,11 +180,6 @@ public class ConfigurationScreen {
                     if (name == null || name.isBlank() || difficulty == null || pacmanImageSelected == null) {
                         throw new Exception();
                     }
-                    String color = pacmanImageSelected.split("\\s+")[0];
-                    color = color.toLowerCase();
-                    String imagePath = "src/main/resources/cs2340/group65/pacman/" + color + "Pacman.png";
-                    System.out.println(imagePath);
-                    App.startGameScreen(name, imagePath, startingLives);
                 } catch (Exception e) {
                     Alert a = new Alert(Alert.AlertType.ERROR);
                     a.setTitle("Error");
@@ -194,6 +189,11 @@ public class ConfigurationScreen {
                     a.setWidth(400);
                     a.showAndWait();
                 }
+                String color = pacmanImageSelected.split("\\s+")[0];
+                color = color.toLowerCase();
+                String imagePath = "src/main/resources/cs2340/group65/pacman/" + color + "Pacman.png";
+                System.out.println(imagePath);
+                App.startGameScreen(name, imagePath, startingLives);
             }
         });
         //adding elements to grid pane
