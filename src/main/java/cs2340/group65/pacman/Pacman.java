@@ -6,11 +6,13 @@ class Pacman extends ImageView {
     private int score = 0;
     private int playerLifes;
     private Maze maze;
+    private Coordinate initialCoordinate;
 
     public Pacman(Coordinate initialCoordinate, String imagePath, int playerLifes, Maze maze) {
         super("file:" + imagePath);
-        setX(initialCoordinate.x);
-        setY(initialCoordinate.y);
+        this.initialCoordinate = initialCoordinate;
+        setX(initialCoordinate.x + maze.getTranslateX());
+        setY(initialCoordinate.y + maze.getTranslateY());
         this.playerLifes = playerLifes;
         this.maze = maze;
         setPreserveRatio(false);
@@ -38,15 +40,6 @@ class Pacman extends ImageView {
         return new Coordinate(getX(), getY());
     }
 
-    public static class Coordinate {
-        public double x;
-        public double y;
-
-        public Coordinate(double x, double y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
 
     public void setScore(int score) {
         this.score = score;

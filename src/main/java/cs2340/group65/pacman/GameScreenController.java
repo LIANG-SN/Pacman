@@ -30,19 +30,24 @@ class GameScreenController {
 
     private int topBarHeight = 50;
     private boolean pause = false;
+    private boolean useEnemyShowPath = false; // temp attribute to display path with monster
 
     public GameScreenController(String playerName, String playerImagePath,
                                 int playerLifes) {
-        maze = new Maze(640, 640, 16, 16, 0, topBarHeight);
         root = new Group();
+        Coordinate pacmanStartLocation = new Coordinate(0, 0);
+        Coordinate enemyStartLocation = new Coordinate(320, 320);
+        maze = new Maze(600, 600, 15, 15, 0, topBarHeight, root,
+                pacmanStartLocation, enemyStartLocation);
         scene = new Scene(root, maze.getWidth(), maze.getHeight() + topBarHeight);
         App.setScene(scene);
-        pacman = new Pacman(new Pacman.Coordinate(100, 100), playerImagePath, playerLifes, maze);
-        ghost = new Monster(maze);
+        pacman = new Pacman(pacmanStartLocation, playerImagePath, playerLifes, maze);
+        ghost = new Monster(maze, enemyStartLocation);
         root.getChildren().addAll(ghost, pacman);
         initPlayerInfoBar(playerName);
         initPauseButton();
         initMainScreenButton();
+        initEnemyShowPathButton();
         initCanvas(0, topBarHeight);
         initEventHandler();
         initTimer();
@@ -131,6 +136,19 @@ class GameScreenController {
         mainScreenButton.setFocusTraversable(false);
         root.getChildren().add(mainScreenButton);
     }
+    private void initEnemyShowPathButton() {
+        Button button = new Button("Show path using enemy");
+        button.setTranslateX(scene.getWidth() / 2 + 130);
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                useEnemyShowPath = true;
+                maze.hideMaze(root);
+            }
+        });
+        button.setFocusTraversable(false);
+        root.getChildren().add(button);
+    }
 
     private void initCanvas(int translateX, int translateY) {
         Canvas canvas = new Canvas(maze.getWidth(), maze.getHeight());
@@ -147,7 +165,7 @@ class GameScreenController {
             public void handle(long l) {
 
                 if (!pause) {
-                    Pacman.Coordinate coordinate = pacman.getLocation();
+                    Coordinate coordinate = pacman.getLocation();
                     if (keyUp && coordinate.y > 0 + maze.getTranslateY()) {
                         pacman.moveUp();
                     }
@@ -162,13 +180,14 @@ class GameScreenController {
                             - maze.getCellSize() + maze.getTranslateX()) {
                         pacman.moveRight();
                     }
-
-                    double pathStartX = ghost.getX() + maze.getCellSize() / 4;
-                    double pathStartY = ghost.getY() - maze.getCellSize();
-                    ghost.update();
-                    double pathEndX = ghost.getX() + maze.getCellSize() / 4;
-                    double pathEndY = ghost.getY() - maze.getCellSize();
-                    graphicsContext.strokeLine(pathStartX, pathStartY, pathEndX, pathEndY);
+                    if (useEnemyShowPath){
+                        double pathStartX = ghost.getX() + maze.getCellSize() / 4;
+                        double pathStartY = ghost.getY() - maze.getCellSize();
+                        ghost.update();
+                        double pathEndX = ghost.getX() + maze.getCellSize() / 4;
+                        double pathEndY = ghost.getY() - maze.getCellSize();
+                        graphicsContext.strokeLine(pathStartX, pathStartY, pathEndX, pathEndY);
+                    }
                 }
             }
         };
