@@ -8,6 +8,7 @@ target/
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+.idea/**/uiDesigner.xml
 *.iws
 *.iml
 *.ipr
@@ -36,3 +37,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+checkstyle-*.jar
+
+# check style
+
+run_checkstyle.py
+cs2340_checks.xml
