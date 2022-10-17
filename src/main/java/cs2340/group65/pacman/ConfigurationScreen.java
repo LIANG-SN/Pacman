@@ -220,12 +220,4 @@ public class ConfigurationScreen extends Application {
 //        String userSelection = "The name you inputted is: " + name + "\nThe difficulty you chose is: " + difficulty + " You will start with " + startingLives + " lives." + "\nThe pacman character you chose is:  " + pacmanImageSelected;
         return userSelection;
     }
-
-    /** screen switching using xml
-    protected void switchTo{screen}() throws IOException {
-        App.setRoot("{screen}");
-    }
-    protected void switchTo{screen2}() throws IOException {
-        App.setRoot("{screen2}");
-    **/
 }
