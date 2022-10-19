@@ -1,4 +1,4 @@
-package cs2340.group65.pacman;
+package gt.cs2340.group65.pacman;
 
 import javafx.scene.image.ImageView;
 

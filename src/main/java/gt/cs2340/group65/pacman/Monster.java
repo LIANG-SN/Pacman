@@ -2,7 +2,7 @@
  * Temporary file to test new move method
  */
 
-package cs2340.group65.pacman;
+package gt.cs2340.group65.pacman;
 
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
@@ -17,7 +17,7 @@ public class Monster extends ImageView {
 
 
     public Monster(Maze maze, Coordinate startLocation) {
-        super("file:src/main/resources/cs2340/group65/pacman/images/BlueGhost.png");
+        super("file:src/main/resources/gt/cs2340/group65/pacman/images/BlueGhost.png");
         this.maze = maze;
         this.setPreserveRatio(false);
         this.setFitWidth(maze.getCellSize());
@@ -59,18 +59,19 @@ public class Monster extends ImageView {
         yDirection = 0;
         int randomDirection = (int) (Math.random() * 4);
         switch (randomDirection) {
-            case 0:
-                xDirection = 2;
-                break;
-            case 1:
-                xDirection = -2;
-                break;
-            case 2:
-                yDirection = 2;
-                break;
-            case 3:
-                yDirection = -2;
-                break;
+        case 0:
+            xDirection = 2;
+            break;
+        case 1:
+            xDirection = -2;
+            break;
+        case 2:
+            yDirection = 2;
+            break;
+        case 3:
+            yDirection = -2;
+            break;
+        default:
         }
     }
 }

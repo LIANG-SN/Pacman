@@ -1,4 +1,4 @@
-package cs2340.group65.pacman;
+package gt.cs2340.group65.pacman;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -23,30 +23,30 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
         thisStage = stage;
-//        scene = new Scene(loadFXML("primary"), 640, 480);
         welcomeScreen = new WelcomeScreen();
         welcomeScreen.display();
         configurationScreen = new ConfigurationScreen();
         stage.setTitle("PacMan Game");
-//        stage.setScene(scene);
         thisStage.show();
     }
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
+
     public static void startWelcomeScreen() {
-        try{
+        try {
             welcomeScreen.display();
-        } catch (IOException ioException){
+        } catch (IOException ioException) {
             System.out.println("io exception occurs during starting welcome screen.");
         }
 
     }
+
     public static void startConfigurationScreen() {
-        try{
+        try {
             configurationScreen.start();
-        } catch (IOException ioException){
+        } catch (IOException ioException) {
             System.out.println("io exception occurs during starting config screen.");
         }
     }
@@ -55,7 +55,7 @@ public class App extends Application {
                                        String playerImagePath,
                                        int playerLifes) {
         gameScreenController = new GameScreenController(playerName,
-                playerImagePath, playerLifes);
+            playerImagePath, playerLifes);
     }
 
 

@@ -1,4 +1,4 @@
-package cs2340.group65.pacman;
+package gt.cs2340.group65.pacman;
 
 import javafx.animation.AnimationTimer;
 import javafx.event.ActionEvent;
@@ -12,8 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-
-import java.io.IOException;
 
 class GameScreenController {
     private boolean keyUp;
@@ -38,7 +36,7 @@ class GameScreenController {
         Coordinate pacmanStartLocation = new Coordinate(0, 0);
         Coordinate enemyStartLocation = new Coordinate(320, 320);
         maze = new Maze(600, 600, 15, 15, 0, topBarHeight, root,
-                pacmanStartLocation, enemyStartLocation);
+            pacmanStartLocation, enemyStartLocation);
         scene = new Scene(root, maze.getWidth(), maze.getHeight() + topBarHeight);
         App.setScene(scene);
         pacman = new Pacman(pacmanStartLocation, playerImagePath, playerLifes, maze);
@@ -58,18 +56,19 @@ class GameScreenController {
             @Override
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
-                    case UP:
-                        keyUp = true;
-                        break;
-                    case DOWN:
-                        keyDown = true;
-                        break;
-                    case LEFT:
-                        keyLeft = true;
-                        break;
-                    case RIGHT:
-                        keyRight = true;
-                        break;
+                case UP:
+                    keyUp = true;
+                    break;
+                case DOWN:
+                    keyDown = true;
+                    break;
+                case LEFT:
+                    keyLeft = true;
+                    break;
+                case RIGHT:
+                    keyRight = true;
+                    break;
+                default:
                 }
             }
         });
@@ -77,18 +76,19 @@ class GameScreenController {
             @Override
             public void handle(KeyEvent event) {
                 switch (event.getCode()) {
-                    case UP:
-                        keyUp = false;
-                        break;
-                    case DOWN:
-                        keyDown = false;
-                        break;
-                    case LEFT:
-                        keyLeft = false;
-                        break;
-                    case RIGHT:
-                        keyRight = false;
-                        break;
+                case UP:
+                    keyUp = false;
+                    break;
+                case DOWN:
+                    keyDown = false;
+                    break;
+                case LEFT:
+                    keyLeft = false;
+                    break;
+                case RIGHT:
+                    keyRight = false;
+                    break;
+                default:
                 }
             }
         });
@@ -114,8 +114,7 @@ class GameScreenController {
                 pause = !pause;
                 if (pause) {
                     pauseButton.setText("Continue");
-                }
-                else {
+                } else {
                     pauseButton.setText("Pause");
                 }
             }
@@ -136,6 +135,7 @@ class GameScreenController {
         mainScreenButton.setFocusTraversable(false);
         root.getChildren().add(mainScreenButton);
     }
+
     private void initEnemyShowPathButton() {
         Button button = new Button("Show path using enemy");
         button.setTranslateX(scene.getWidth() / 2 + 130);
@@ -170,17 +170,17 @@ class GameScreenController {
                         pacman.moveUp();
                     }
                     if (keyDown && coordinate.y < maze.getHeight()
-                            - maze.getCellSize() + maze.getTranslateY()) {
+                        - maze.getCellSize() + maze.getTranslateY()) {
                         pacman.moveDown();
                     }
                     if (keyLeft && coordinate.x > 0 + maze.getTranslateX()) {
                         pacman.moveLeft();
                     }
                     if (keyRight && coordinate.x < maze.getWidth()
-                            - maze.getCellSize() + maze.getTranslateX()) {
+                        - maze.getCellSize() + maze.getTranslateX()) {
                         pacman.moveRight();
                     }
-                    if (useEnemyShowPath){
+                    if (useEnemyShowPath) {
                         double pathStartX = ghost.getX() + maze.getCellSize() / 4;
                         double pathStartY = ghost.getY() - maze.getCellSize();
                         ghost.update();
@@ -195,6 +195,6 @@ class GameScreenController {
     }
 
     private void switchToMainScreen() {
-            App.startConfigurationScreen();
+        App.startConfigurationScreen();
     }
 }

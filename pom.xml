@@ -60,7 +60,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>cs2340.group65.pacman/cs2340.group65.pacman.App</mainClass>
+                            <mainClass>cs2340.group65.pacman/gt.cs2340.group65.pacman.App</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>

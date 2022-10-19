@@ -1,12 +1,10 @@
-package cs2340.group65.pacman;
+package gt.cs2340.group65.pacman;
 
 import java.io.IOException;
 import java.io.FileInputStream;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,7 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -53,21 +50,23 @@ public class ConfigurationScreen {
 
         //Name logic (listens for change in textfield, sets name to textfield)
         nameField.textProperty().addListener((obs, oldText, newText) -> {
-            System.out.println("Text changed from "+oldText+" to "+newText);
+            System.out.println("Text changed from " + oldText + " to " + newText);
             name = newText;
             userSelectionLabel.setText(newUserSelection());
         });
 
         //Difficulty
         Label difficultyLabel = new Label("Choose The Difficulty:");
-        Label difficultyDescriptionLabel = new Label("Easy = 10 lives; Medium = 5 lives; Hard = 2 lives");
+        Label difficultyDescriptionLabel =
+            new Label("Easy = 10 lives; Medium = 5 lives; Hard = 2 lives");
         Button easyButton = new Button("Easy");
         Button mediumButton = new Button("Medium");
         Button hardButton = new Button("Hard");
         HBox difficultyButtonsBox = new HBox();
         difficultyButtonsBox.getChildren().addAll(easyButton, mediumButton, hardButton);
         VBox difficultyBox = new VBox();
-        difficultyBox.getChildren().addAll(difficultyLabel, difficultyDescriptionLabel, difficultyButtonsBox);
+        difficultyBox.getChildren()
+            .addAll(difficultyLabel, difficultyDescriptionLabel, difficultyButtonsBox);
         grid.add(difficultyBox, 1, 2);
 
         //Difficulty logic
@@ -78,13 +77,11 @@ public class ConfigurationScreen {
                     difficulty = "Easy";
                     startingLives = 10;
                     System.out.println("New difficulty" + difficulty);
-                }
-                else if(event.getSource() == mediumButton) {
+                } else if (event.getSource() == mediumButton) {
                     difficulty = "Medium";
                     startingLives = 5;
                     System.out.println("New difficulty" + difficulty);
-                }
-                else if(event.getSource() == hardButton) {
+                } else if (event.getSource() == hardButton) {
                     difficulty = "Hard";
                     startingLives = 2;
                     System.out.println("New difficulty" + difficulty);
@@ -101,7 +98,8 @@ public class ConfigurationScreen {
         //Choose pacman character sprite
         Label pacmanChooserLabel = new Label("Choose Your Pacman Character Sprite:");
 
-        Image yellowPacmanImg = new Image(new FileInputStream("src/main/resources/cs2340/group65/pacman/yellowPacman.png"));
+        Image yellowPacmanImg = new Image(
+            new FileInputStream("src/main/resources/gt/cs2340/group65/pacman/yellowPacman.png"));
         ImageView yellowPacmanImgView = new ImageView(yellowPacmanImg);
         yellowPacmanImgView.setX(2);
         yellowPacmanImgView.setY(2);
@@ -110,7 +108,8 @@ public class ConfigurationScreen {
         Button yellowPacmanButton = new Button("Yellow Pacman");
         yellowPacmanButton.setGraphic(yellowPacmanImgView);
 
-        Image bluePacmanImg = new Image(new FileInputStream("src/main/resources/cs2340/group65/pacman/bluePacman.png"));
+        Image bluePacmanImg = new Image(
+            new FileInputStream("src/main/resources/gt/cs2340/group65/pacman/bluePacman.png"));
         ImageView bluePacmanImgView = new ImageView(bluePacmanImg);
         bluePacmanImgView.setX(2);
         bluePacmanImgView.setY(2);
@@ -119,7 +118,8 @@ public class ConfigurationScreen {
         Button bluePacmanButton = new Button("Blue Pacman");
         bluePacmanButton.setGraphic(bluePacmanImgView);
 
-        Image pinkPacmanImg = new Image(new FileInputStream("src/main/resources/cs2340/group65/pacman/pinkPacman.png"));
+        Image pinkPacmanImg = new Image(
+            new FileInputStream("src/main/resources/gt/cs2340/group65/pacman/pinkPacman.png"));
         ImageView pinkPacmanImgView = new ImageView(pinkPacmanImg);
         pinkPacmanImgView.setX(2);
         pinkPacmanImgView.setY(2);
@@ -129,7 +129,8 @@ public class ConfigurationScreen {
         pinkPacmanButton.setGraphic(pinkPacmanImgView);
 
         HBox pacmanButtonsBox = new HBox();
-        pacmanButtonsBox.getChildren().addAll(yellowPacmanButton, bluePacmanButton, pinkPacmanButton);
+        pacmanButtonsBox.getChildren()
+            .addAll(yellowPacmanButton, bluePacmanButton, pinkPacmanButton);
         VBox pacmanChooserBox = new VBox();
         pacmanChooserBox.getChildren().addAll(pacmanChooserLabel, pacmanButtonsBox);
         grid.add(pacmanChooserBox, 1, 3);
@@ -141,12 +142,10 @@ public class ConfigurationScreen {
                 if (event.getSource() == yellowPacmanButton) {
                     pacmanImageSelected = "Yellow Pacman";
                     System.out.println("Pacman is " + pacmanImageSelected);
-                }
-                else if(event.getSource() == bluePacmanButton) {
+                } else if (event.getSource() == bluePacmanButton) {
                     pacmanImageSelected = "Blue Pacman";
                     System.out.println("Pacman is " + pacmanImageSelected);
-                }
-                else if(event.getSource() == pinkPacmanButton) {
+                } else if (event.getSource() == pinkPacmanButton) {
                     pacmanImageSelected = "Pink Pacman";
                     System.out.println("Pacman is " + pacmanImageSelected);
                 }
@@ -177,21 +176,24 @@ public class ConfigurationScreen {
 
                 //handling for when user has not inputted valid name, chosen a player model, or selected a difficulty
                 try {
-                    if (name == null || name.isBlank() || difficulty == null || pacmanImageSelected == null) {
+                    if (name == null || name.isBlank() || difficulty == null
+                        || pacmanImageSelected == null) {
                         throw new Exception();
                     }
                 } catch (Exception e) {
                     Alert a = new Alert(Alert.AlertType.ERROR);
                     a.setTitle("Error");
                     a.setHeaderText("Input Error!!");
-                    a.setContentText("There is an input error. Please make sure you have inputted a valid name, chosen a player model, and selected a difficulty.");
+                    a.setContentText(
+                        "There is an input error. Please make sure you have inputted a valid name, chosen a player model, and selected a difficulty.");
                     a.setHeight(300);
                     a.setWidth(400);
                     a.showAndWait();
                 }
                 String color = pacmanImageSelected.split("\\s+")[0];
                 color = color.toLowerCase();
-                String imagePath = "src/main/resources/cs2340/group65/pacman/" + color + "Pacman.png";
+                String imagePath =
+                    "src/main/resources/gt/cs2340/group65/pacman/" + color + "Pacman.png";
                 System.out.println(imagePath);
                 App.startGameScreen(name, imagePath, startingLives);
             }
@@ -214,14 +216,15 @@ public class ConfigurationScreen {
         if (difficulty == null) {
             userSelection += "\nYou haven't chosen a difficulty yet";
         } else {
-            userSelection += "\nThe difficulty you chose is: " + difficulty + ". You will start with " + startingLives + " lives.";
+            userSelection +=
+                "\nThe difficulty you chose is: " + difficulty + ". You will start with "
+                    + startingLives + " lives.";
         }
-        if(pacmanImageSelected == null) {
+        if (pacmanImageSelected == null) {
             userSelection += "\nYou haven't chosen a pacman character yet";
         } else {
             userSelection += "\nThe pacman character you chose is:  " + pacmanImageSelected;
         }
-//        String userSelection = "The name you inputted is: " + name + "\nThe difficulty you chose is: " + difficulty + " You will start with " + startingLives + " lives." + "\nThe pacman character you chose is:  " + pacmanImageSelected;
         return userSelection;
     }
 }
