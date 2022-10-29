@@ -13,6 +13,8 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 
+import java.io.FileNotFoundException;
+
 class GameScreenController {
     private boolean keyUp;
     private boolean keyDown;
@@ -31,7 +33,7 @@ class GameScreenController {
     private boolean useEnemyShowPath = false; // temp attribute to display path with monster
 
     public GameScreenController(String playerName, String playerImagePath,
-                                int playerLifes) {
+                                int playerLifes, String color) {
         root = new Group();
         Coordinate pacmanStartLocation = new Coordinate(0, 0);
         Coordinate enemyStartLocation = new Coordinate(320, 320);
@@ -39,7 +41,7 @@ class GameScreenController {
             pacmanStartLocation, enemyStartLocation);
         scene = new Scene(root, maze.getWidth(), maze.getHeight() + topBarHeight);
         App.setScene(scene);
-        pacman = new Pacman(pacmanStartLocation, playerImagePath, playerLifes, maze);
+        pacman = new Pacman(pacmanStartLocation, playerImagePath, playerLifes, maze, color);
         ghost = new Monster(maze, enemyStartLocation);
         root.getChildren().addAll(ghost, pacman);
         initPlayerInfoBar(playerName);
@@ -161,10 +163,11 @@ class GameScreenController {
 
     private void initTimer() {
         timer = new AnimationTimer() {
+            long lastTime = 0;
             @Override
-            public void handle(long l) {
+            public void handle(long time) {
 
-                if (!pause) {
+                if (!pause && (time - lastTime > 1e6) ) {
                     Coordinate coordinate = pacman.getLocation();
                     if (keyUp && coordinate.y > 0 + maze.getTranslateY()) {
                         pacman.moveUp();
@@ -188,6 +191,7 @@ class GameScreenController {
                         double pathEndY = ghost.getY() - maze.getCellSize();
                         graphicsContext.strokeLine(pathStartX, pathStartY, pathEndX, pathEndY);
                     }
+                    lastTime = time;
                 }
             }
         };
