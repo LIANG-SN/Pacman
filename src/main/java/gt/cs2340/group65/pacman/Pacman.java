@@ -21,19 +21,28 @@ class Pacman extends ImageView {
     }
 
     public void moveUp() {
-        setY(getY() - 2);
+        if (maze.checkUp(new Coordinate(getX(), getY()))) {
+            setY(getY() - 1);
+        }
     }
 
     public void moveDown() {
-        setY(getY() + 2);
+
+        if (maze.checkDown(new Coordinate(getX(), getY()))) {
+            setY(getY() + 1);
+        }
     }
 
     public void moveLeft() {
-        setX(getX() - 2);
+        if (maze.checkLeft(new Coordinate(getX(), getY()))) {
+            setX(getX() - 1);
+        }
     }
 
     public void moveRight() {
-        setX(getX() + 2);
+        if (maze.checkRight(new Coordinate(getX(), getY()))) {
+            setX(getX() + 1);
+        }
     }
 
     public Coordinate getLocation() {

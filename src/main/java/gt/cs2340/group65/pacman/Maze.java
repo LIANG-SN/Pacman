@@ -108,4 +108,70 @@ public class Maze {
     public int getTranslateY() {
         return translateY;
     }
+
+    public boolean checkWall(Coordinate p){
+        // p has not been normalized
+        int grid_column = (int) ((p.x - translateX + getCellSize() / 2) / (getCellSize()));
+        int grid_row = (int) ((p.y - translateY + getCellSize() / 2) / (getCellSize()));
+        if (grid[grid_row][grid_column] == '1') {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    public boolean checkUp(Coordinate p) {
+        Coordinate lt_moved = new Coordinate(p.x - getCellSize() / 2.1,
+            p.y - getCellSize() / 2.1 - 1);
+        Coordinate rt_moved = new Coordinate(p.x + getCellSize() / 2.1,
+            p.y - getCellSize() / 2.1 - 1);
+
+        if (checkWall(lt_moved) || checkWall(rt_moved)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    public boolean checkDown(Coordinate p) {
+        Coordinate ld_moved = new Coordinate(p.x - getCellSize() / 2.1,
+            p.y + getCellSize() / 2.1 + 1);
+        Coordinate rd_moved = new Coordinate(p.x + getCellSize() / 2.1,
+            p.y + getCellSize() / 2.1 + 1);
+
+        if (checkWall(ld_moved) || checkWall(rd_moved)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public boolean checkLeft(Coordinate p) {
+        Coordinate lt_moved = new Coordinate(p.x - getCellSize() / 2.1 - 1,
+            p.y - getCellSize() / 2.1);
+        Coordinate ld_moved = new Coordinate(p.x - getCellSize() / 2.1 - 1,
+            p.y + getCellSize() / 2.1);
+
+        if (checkWall(ld_moved) || checkWall(ld_moved)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+    public boolean checkRight(Coordinate p) {
+        Coordinate rt_moved = new Coordinate(p.x + getCellSize() / 2.1 + 1,
+            p.y - getCellSize() / 2.1);
+        Coordinate rd_moved = new Coordinate(p.x + getCellSize() / 2.1 + 1,
+            p.y + getCellSize() / 2.1);
+
+        if (checkWall(rt_moved) || checkWall(rd_moved)) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
 }

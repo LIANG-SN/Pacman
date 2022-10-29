@@ -161,10 +161,11 @@ class GameScreenController {
 
     private void initTimer() {
         timer = new AnimationTimer() {
+            long lastTime = 0;
             @Override
-            public void handle(long l) {
+            public void handle(long time) {
 
-                if (!pause) {
+                if (!pause && (time - lastTime > 1e6) ) {
                     Coordinate coordinate = pacman.getLocation();
                     if (keyUp && coordinate.y > 0 + maze.getTranslateY()) {
                         pacman.moveUp();
@@ -188,6 +189,7 @@ class GameScreenController {
                         double pathEndY = ghost.getY() - maze.getCellSize();
                         graphicsContext.strokeLine(pathStartX, pathStartY, pathEndX, pathEndY);
                     }
+                    lastTime = time;
                 }
             }
         };
