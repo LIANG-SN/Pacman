@@ -40,6 +40,10 @@ public class Maze {
             (int) (pacmanStartLocation.y / getCellSize()));
         grid[(int) (enemyStartLocation.x / getCellSize())]
             [(int) (pacmanStartLocation.y / getCellSize())] = '0';
+        removeDeadend();
+        displayMaze(root);
+    }
+    private void removeDeadend(){
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
                 int count = 0;
@@ -84,9 +88,7 @@ public class Maze {
                 }
             }
         }
-        displayMaze(root);
     }
-
     private void generateMaze(char[][] grid, int x, int y) {
         List<int[]> moveXY = new ArrayList<>(List.of(new int[] {1, 0}, new int[] {0, 1},
             new int[] {-1, 0}, new int[] {0, -1}));
