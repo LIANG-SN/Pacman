@@ -53,9 +53,9 @@ public class App extends Application {
 
     public static void startGameScreen(String playerName,
                                        String playerImagePath,
-                                       int playerLifes) {
+                                       int playerLifes, String color) {
         gameScreenController = new GameScreenController(playerName,
-            playerImagePath, playerLifes);
+            playerImagePath, playerLifes, color);
     }
 
 

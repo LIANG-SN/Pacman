@@ -185,7 +185,7 @@ public class ConfigurationScreen {
                     String imagePath =
                         "src/main/resources/gt/cs2340/group65/pacman/" + color + "Pacman.png";
                     System.out.println(imagePath);
-                    App.startGameScreen(name, imagePath, startingLives);
+                    App.startGameScreen(name, imagePath, startingLives, color);
                 } catch (Exception e) {
                     Alert a = new Alert(Alert.AlertType.ERROR);
                     a.setTitle("Error");
