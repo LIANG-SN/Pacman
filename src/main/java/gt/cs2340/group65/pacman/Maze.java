@@ -259,7 +259,7 @@ public class Maze {
         Coordinate ld_moved = new Coordinate(p.x - getCellSize() / 2.3 - 1,
             p.y + getCellSize() / 2.3);
 
-        if (checkWall(ld_moved) || checkWall(ld_moved)) {
+        if (checkWall(lt_moved) || checkWall(ld_moved)) {
             return false;
         }
         else {
