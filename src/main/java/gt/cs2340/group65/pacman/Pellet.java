@@ -2,14 +2,14 @@ package gt.cs2340.group65.pacman;
 
 import javafx.scene.image.ImageView;
 
-public class Pelle extends ImageView {
+public class Pellet extends ImageView {
 
     private boolean isSpecial;
     private int point;
 
     private Coordinate location;
 
-    public Pelle (String imagePath, boolean specialPelle, int point) {
+    public Pellet(String imagePath, boolean specialPelle, int point) {
         super("file:" + imagePath);
         this.point = point;
         isSpecial = specialPelle;
