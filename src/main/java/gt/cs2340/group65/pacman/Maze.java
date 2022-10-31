@@ -165,20 +165,17 @@ public class Maze {
     }
 
     public int removePelle(Group root, Coordinate playerLocation) {
-        //int x = (int ) (playerLocation.y / getCellSize());
-        int x = (int ) ((playerLocation.x - translateX + getCellSize() / 2) / (getCellSize()));
-        int y = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
+        int row = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
+        int col = (int ) ((playerLocation.x - translateX + getCellSize() / 2) / (getCellSize()));
         int point = 0;
-        if (x < numRows && x >= 0 && y < numColumns && y >= 0) {
-            if (checkPelle(x, y)) {
-                point = getPelleScore(x, y);
-                pelles[x][y].setPreserveRatio(false);
-                pelles[x][y].setFitWidth(getCellSize());
-                pelles[x][y].setFitHeight(getCellSize());
-                //pelles[x][y].setX(y * getCellSize() + translateX);
-                //pelles[x][y].setY(x * getCellSize() + translateY);
-                root.getChildren().remove(pelles[x][y]);
-                pelles[x][y] = null;
+        if (row < numRows && row >= 0 && col < numColumns && col >= 0) {
+            if (checkPelle(row, col)) {
+                point = getPelleScore(row, col);
+                pelles[row][col].setPreserveRatio(false);
+                pelles[row][col].setFitWidth(getCellSize());
+                pelles[row][col].setFitHeight(getCellSize());
+                root.getChildren().remove(pelles[row][col]);
+                pelles[row][col] = null;
             }
         }
         return point;
