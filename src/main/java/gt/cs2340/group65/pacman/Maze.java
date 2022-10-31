@@ -164,24 +164,35 @@ public class Maze {
         }
     }
 
-    public void removePelle(Group root, int i, int j) {
-        pelles[i][j].setPreserveRatio(false);
-        pelles[i][j].setFitWidth(getCellSize());
-        pelles[i][j].setFitHeight(getCellSize());
-        pelles[i][j].setX(j * getCellSize() + translateX);
-        pelles[i][j].setY(i * getCellSize() + translateY);
-        root.getChildren().remove(pelles[i][j]);
-        pelles[i][j] = null;
+    public int removePelle(Group root, Coordinate playerLocation) {
+        int x = (int ) (playerLocation.x / getCellSize());
+        int y = (int) (playerLocation.y / getCellSize());
+        int point = 0;
+        if (x < numRows && x >= 0 && y < numColumns && y >= 0) {
+            if (checkPelle(x, y)) {
+                point = getPelleScore(x, y);
+                pelles[x][y].setPreserveRatio(false);
+                pelles[x][y].setFitWidth(getCellSize());
+                pelles[x][y].setFitHeight(getCellSize());
+                //pelles[x][y].setX(y * getCellSize() + translateX);
+                //pelles[x][y].setY(x * getCellSize() + translateY);
+                root.getChildren().remove(pelles[x][y]);
+                pelles[x][y] = null;
+            }
+        }
+        return point;
+    }
+    public boolean checkPelle(int x, int y) {
+        return pelles[x][y] != null;
     }
 
-    public boolean checkPelle(int i, int j) {
-        return pelles[i][j] != null;
+    private int getPelleScore(int x, int y) {
+        return pelles[x][y].getPoint();
     }
 
-    public int getPelleScore(int i, int j) {
-        return pelles[i][j].getPoint();
+    public Coordinate getPelleLocation(int x, int y) {
+        return pelles[x][y].getLocation();
     }
-
     public double getCellSize() {
         return height / numRows;
     }

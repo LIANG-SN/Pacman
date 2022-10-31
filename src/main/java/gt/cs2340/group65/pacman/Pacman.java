@@ -83,13 +83,9 @@ class Pacman extends ImageView {
         }
     }
 
-    private void eatPelle(Coordinate currentLocation) {
-        int playerX = (int )Math.ceil(currentLocation.x / maze.getCellSize());
-        int playerY = (int) Math.ceil(currentLocation.y / maze.getCellSize());
-        if(maze.checkPelle(playerX, playerY)) {
-            score = score + maze.getPelleScore(playerX, playerY);
-            maze.removePelle(root, playerX, playerY);
-        }
+    private void eatPelle(Coordinate playerLocation) {
+        int point = maze.removePelle(root, playerLocation);
+        score = score + point;
     }
 
     public Coordinate getLocation() {
