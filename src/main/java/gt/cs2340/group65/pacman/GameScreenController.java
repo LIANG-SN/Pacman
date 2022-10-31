@@ -28,6 +28,7 @@ class GameScreenController {
     private GraphicsContext graphicsContext;
     private Maze maze;
 
+    private Label scoreLabel;
     private int topBarHeight = 50;
     private boolean pause = false;
     private boolean useEnemyShowPath = false; // temp attribute to display path with monster
@@ -41,7 +42,7 @@ class GameScreenController {
             pacmanStartLocation, enemyStartLocation);
         scene = new Scene(root, maze.getWidth(), maze.getHeight() + topBarHeight);
         App.setScene(scene);
-        pacman = new Pacman(pacmanStartLocation, playerImagePath, playerLifes, maze, color);
+        pacman = new Pacman(pacmanStartLocation, playerImagePath, playerLifes, maze, color, root);
         ghost = new Monster(maze, enemyStartLocation);
         root.getChildren().addAll(ghost, pacman);
         initPlayerInfoBar(playerName);
@@ -99,7 +100,7 @@ class GameScreenController {
     private void initPlayerInfoBar(String playerName) {
         HBox playerInfoBar = new HBox(20);
         Label playerNameLabel = new Label("Player: " + playerName);
-        Label scoreLabel = new Label("Score: " + pacman.getScore());
+        scoreLabel = new Label("Score: " + pacman.getScore());
         Label playerLife = new Label("Life: " + pacman.getPlayerLifes());
         Label round = new Label("Round: One");
         playerInfoBar.setAlignment(Pos.TOP_LEFT);
@@ -192,6 +193,7 @@ class GameScreenController {
                         graphicsContext.strokeLine(pathStartX, pathStartY, pathEndX, pathEndY);
                     }
                     lastTime = time;
+                    scoreLabel.setText(("Score: " + pacman.getScore()));
                 }
             }
         };

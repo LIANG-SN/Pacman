@@ -16,6 +16,7 @@ public class Maze {
     private int translateY;
     private char[][] grid;
     private ImageView[][] imageViews;
+    private Pellet[][] pellets;
 
     public Maze(int width, int height, int numRows, int numColumns,
                 int translateX, int translateY, Group root,
@@ -29,11 +30,14 @@ public class Maze {
         assert height / numRows == width / numColumns;
         grid = new char[numRows][numColumns];
         imageViews = new ImageView[numRows][numColumns];
+        pellets = new Pellet[numRows][numColumns];
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
                 grid[i][j] = '1';
+
                 imageViews[i][j] = new ImageView(
                     "file:src/main/resources/gt/cs2340/group65/pacman/images/brick_wall.png");
+                pellets[i][j] = new Pellet("src/main/resources/gt/cs2340/group65/pacman/images/normalPelle.png", false, 10);
             }
         }
         generateMaze(grid, (int) (pacmanStartLocation.x / getCellSize()),
@@ -41,6 +45,10 @@ public class Maze {
         grid[(int) (enemyStartLocation.x / getCellSize())]
             [(int) (pacmanStartLocation.y / getCellSize())] = '0';
         removeDeadend();
+        grid[(int) (enemyStartLocation.x / getCellSize())]
+            [(int) (enemyStartLocation.y / getCellSize())] = '2';
+        grid[(int) (pacmanStartLocation.x / getCellSize())]
+            [(int) (pacmanStartLocation.y / getCellSize())] = '2';
         displayMaze(root);
     }
     private void removeDeadend(){
@@ -116,6 +124,27 @@ public class Maze {
                     imageViews[i][j].setY(i * getCellSize() + translateY);
                     root.getChildren().add(imageViews[i][j]);
                 }
+
+                if (grid[i][j] == '0') {
+                    double random = Math.random();
+                    if (random > 0.10) {
+                        pellets[i][j].setPreserveRatio(false);
+                        pellets[i][j].setFitWidth(getCellSize());
+                        pellets[i][j].setFitHeight(getCellSize());
+                        pellets[i][j].setX(j * getCellSize() + translateX);
+                        pellets[i][j].setY(i * getCellSize() + translateY);
+                        root.getChildren().add(pellets[i][j]);
+                    } else {
+                        pellets[i][j] = new Pellet(
+                            "src/main/resources/gt/cs2340/group65/pacman/images/specialPelle.png", true, 100);
+                        pellets[i][j].setPreserveRatio(false);
+                        pellets[i][j].setFitWidth(getCellSize());
+                        pellets[i][j].setFitHeight(getCellSize());
+                        pellets[i][j].setX(j * getCellSize() + translateX);
+                        pellets[i][j].setY(i * getCellSize() + translateY);
+                        root.getChildren().add(pellets[i][j]);
+                    }
+                }
             }
         }
     }
@@ -135,6 +164,33 @@ public class Maze {
         }
     }
 
+    public int removePelle(Group root, Coordinate playerLocation) {
+        int row = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
+        int col = (int ) ((playerLocation.x - translateX + getCellSize() / 2) / (getCellSize()));
+        int point = 0;
+        if (row < numRows && row >= 0 && col < numColumns && col >= 0) {
+            if (checkPelle(row, col)) {
+                point = getPelleScore(row, col);
+                pellets[row][col].setPreserveRatio(false);
+                pellets[row][col].setFitWidth(getCellSize());
+                pellets[row][col].setFitHeight(getCellSize());
+                root.getChildren().remove(pellets[row][col]);
+                pellets[row][col] = null;
+            }
+        }
+        return point;
+    }
+    public boolean checkPelle(int x, int y) {
+        return pellets[x][y] != null;
+    }
+
+    private int getPelleScore(int x, int y) {
+        return pellets[x][y].getPoint();
+    }
+
+    public Coordinate getPelleLocation(int x, int y) {
+        return pellets[x][y].getLocation();
+    }
     public double getCellSize() {
         return height / numRows;
     }
