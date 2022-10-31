@@ -16,6 +16,7 @@ public class Maze {
     private int translateY;
     private char[][] grid;
     private ImageView[][] imageViews;
+    private Pelle[][] pelles;
 
     public Maze(int width, int height, int numRows, int numColumns,
                 int translateX, int translateY, Group root,
@@ -29,11 +30,14 @@ public class Maze {
         assert height / numRows == width / numColumns;
         grid = new char[numRows][numColumns];
         imageViews = new ImageView[numRows][numColumns];
+        pelles = new Pelle[numRows][numColumns];
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
                 grid[i][j] = '1';
+
                 imageViews[i][j] = new ImageView(
                     "file:src/main/resources/gt/cs2340/group65/pacman/images/brick_wall.png");
+                pelles[i][j] = new Pelle("src/main/resources/gt/cs2340/group65/pacman/images/normalPelle.png", false, 10);
             }
         }
         generateMaze(grid, (int) (pacmanStartLocation.x / getCellSize()),
@@ -41,6 +45,10 @@ public class Maze {
         grid[(int) (enemyStartLocation.x / getCellSize())]
             [(int) (pacmanStartLocation.y / getCellSize())] = '0';
         removeDeadend();
+        grid[(int) (enemyStartLocation.x / getCellSize())]
+            [(int) (enemyStartLocation.y / getCellSize())] = '2';
+        grid[(int) (pacmanStartLocation.x / getCellSize())]
+            [(int) (pacmanStartLocation.y / getCellSize())] = '2';
         displayMaze(root);
     }
     private void removeDeadend(){
@@ -116,6 +124,27 @@ public class Maze {
                     imageViews[i][j].setY(i * getCellSize() + translateY);
                     root.getChildren().add(imageViews[i][j]);
                 }
+
+                if (grid[i][j] == '0') {
+                    double random = Math.random();
+                    if (random > 0.10) {
+                        pelles[i][j].setPreserveRatio(false);
+                        pelles[i][j].setFitWidth(getCellSize());
+                        pelles[i][j].setFitHeight(getCellSize());
+                        pelles[i][j].setX(j * getCellSize() + translateX);
+                        pelles[i][j].setY(i * getCellSize() + translateY);
+                        root.getChildren().add(pelles[i][j]);
+                    } else {
+                        pelles[i][j] = new Pelle(
+                            "src/main/resources/gt/cs2340/group65/pacman/images/specialPelle.png", true, 100);
+                        pelles[i][j].setPreserveRatio(false);
+                        pelles[i][j].setFitWidth(getCellSize());
+                        pelles[i][j].setFitHeight(getCellSize());
+                        pelles[i][j].setX(j * getCellSize() + translateX);
+                        pelles[i][j].setY(i * getCellSize() + translateY);
+                        root.getChildren().add(pelles[i][j]);
+                    }
+                }
             }
         }
     }
@@ -133,6 +162,24 @@ public class Maze {
                 }
             }
         }
+    }
+
+    public void removePelle(Group root, int i, int j) {
+        pelles[i][j].setPreserveRatio(false);
+        pelles[i][j].setFitWidth(getCellSize());
+        pelles[i][j].setFitHeight(getCellSize());
+        pelles[i][j].setX(j * getCellSize() + translateX);
+        pelles[i][j].setY(i * getCellSize() + translateY);
+        root.getChildren().remove(pelles[i][j]);
+        pelles[i][j] = null;
+    }
+
+    public boolean checkPelle(int i, int j) {
+        return pelles[i][j] != null;
+    }
+
+    public int getPelleScore(int i, int j) {
+        return pelles[i][j].getPoint();
     }
 
     public double getCellSize() {

@@ -2,6 +2,7 @@ package gt.cs2340.group65.pacman;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.Group;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,8 +14,9 @@ class Pacman extends ImageView {
     private Maze maze;
     private Coordinate initialCoordinate;
     private String color;
+    private Group root;
 
-    public Pacman(Coordinate initialCoordinate, String imagePath, int playerLifes, Maze maze, String color) {
+    public Pacman(Coordinate initialCoordinate, String imagePath, int playerLifes, Maze maze, String color, Group root) {
         super("file:" + imagePath);
         this.initialCoordinate = initialCoordinate;
         setX(initialCoordinate.x + maze.getTranslateX());
@@ -25,6 +27,7 @@ class Pacman extends ImageView {
         setFitWidth(maze.getCellSize());
         setFitHeight(maze.getCellSize());
         this.color = color;
+        this.root = root;
     }
 
     public void moveUp() {
@@ -36,6 +39,7 @@ class Pacman extends ImageView {
             catch(Exception e) {
                 System.out.println("something was wrong with image file");
             }
+            eatPelle(getLocation());
         }
     }
 
@@ -49,6 +53,7 @@ class Pacman extends ImageView {
             catch(Exception e) {
                 System.out.println("something was wrong with image file");
             }
+            eatPelle(getLocation());
         }
     }
 
@@ -61,6 +66,7 @@ class Pacman extends ImageView {
             } catch (Exception e) {
                 System.out.println("something was wrong with image file");
             }
+            eatPelle(getLocation());
         }
     }
 
@@ -73,6 +79,16 @@ class Pacman extends ImageView {
             } catch (Exception e) {
                 System.out.println("something was wrong with image file");
             }
+            eatPelle(getLocation());
+        }
+    }
+
+    private void eatPelle(Coordinate currentLocation) {
+        int playerX = (int )Math.ceil(currentLocation.x / maze.getCellSize());
+        int playerY = (int) Math.ceil(currentLocation.y / maze.getCellSize());
+        if(maze.checkPelle(playerX, playerY)) {
+            score = score + maze.getPelleScore(playerX, playerY);
+            maze.removePelle(root, playerX, playerY);
         }
     }
 
