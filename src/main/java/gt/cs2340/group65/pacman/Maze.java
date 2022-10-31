@@ -165,8 +165,9 @@ public class Maze {
     }
 
     public int removePelle(Group root, Coordinate playerLocation) {
-        int x = (int ) (playerLocation.x / getCellSize());
-        int y = (int) (playerLocation.y / getCellSize());
+        //int x = (int ) (playerLocation.y / getCellSize());
+        int x = (int ) ((playerLocation.x - translateX + getCellSize() / 2) / (getCellSize()));
+        int y = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
         int point = 0;
         if (x < numRows && x >= 0 && y < numColumns && y >= 0) {
             if (checkPelle(x, y)) {
