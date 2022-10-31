@@ -44,7 +44,8 @@ class GameScreenController {
         App.setScene(scene);
         pacman = new Pacman(pacmanStartLocation, playerImagePath, playerLifes, maze, color, root);
         ghost = new Monster(maze, enemyStartLocation);
-        root.getChildren().addAll(ghost, pacman);
+        root.getChildren().add(pacman);
+        root.getChildren().add(ghost);
         initPlayerInfoBar(playerName);
         initPauseButton();
         initMainScreenButton();

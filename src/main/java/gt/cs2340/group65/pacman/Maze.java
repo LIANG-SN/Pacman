@@ -43,12 +43,16 @@ public class Maze {
         generateMaze(grid, (int) (pacmanStartLocation.x / getCellSize()),
             (int) (pacmanStartLocation.y / getCellSize()));
         grid[(int) (enemyStartLocation.x / getCellSize())]
-            [(int) (pacmanStartLocation.y / getCellSize())] = '0';
+            [(int) (enemyStartLocation.y / getCellSize())] = '0';
         removeDeadend();
         grid[(int) (enemyStartLocation.x / getCellSize())]
             [(int) (enemyStartLocation.y / getCellSize())] = '2';
         grid[(int) (pacmanStartLocation.x / getCellSize())]
             [(int) (pacmanStartLocation.y / getCellSize())] = '2';
+        pellets[(int) (enemyStartLocation.x / getCellSize())]
+               [(int) (enemyStartLocation.y / getCellSize())] = null;
+        pellets[(int) (pacmanStartLocation.x / getCellSize())]
+                [(int) (pacmanStartLocation.y / getCellSize())] = null;
         displayMaze(root);
     }
     private void removeDeadend(){
