@@ -168,21 +168,21 @@ class GameScreenController {
             @Override
             public void handle(long time) {
 
-                if (!pause && (time - lastTime > 1e6) ) {
+                if (!pause && (time - lastTime > 1e7) ) {
                     Coordinate coordinate = pacman.getLocation();
                     if (keyUp && coordinate.y > 0 + maze.getTranslateY()) {
-                        pacman.moveUp();
+                            pacman.moveUp();
                     }
                     if (keyDown && coordinate.y < maze.getHeight()
                         - maze.getCellSize() + maze.getTranslateY()) {
-                        pacman.moveDown();
+                            pacman.moveDown();
                     }
                     if (keyLeft && coordinate.x > 0 + maze.getTranslateX()) {
-                        pacman.moveLeft();
+                            pacman.moveLeft();
                     }
                     if (keyRight && coordinate.x < maze.getWidth()
                         - maze.getCellSize() + maze.getTranslateX()) {
-                        pacman.moveRight();
+                            pacman.moveRight();
                     }
                     if (useEnemyShowPath) {
                         double pathStartX = ghost.getX() + maze.getCellSize() / 4;
