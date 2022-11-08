@@ -153,21 +153,6 @@ public class Maze {
         }
     }
 
-    public void hideMaze(Group root) {
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < numColumns; j++) {
-                if (grid[i][j] == '1') {
-                    imageViews[i][j].setPreserveRatio(false);
-                    imageViews[i][j].setFitWidth(getCellSize());
-                    imageViews[i][j].setFitHeight(getCellSize());
-                    imageViews[i][j].setX(j * getCellSize() + translateX);
-                    imageViews[i][j].setY(i * getCellSize() + translateY);
-                    root.getChildren().remove(imageViews[i][j]);
-                }
-            }
-        }
-    }
-
     public int removePelle(Group root, Coordinate playerLocation) {
         int row = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
         int col = (int ) ((playerLocation.x - translateX + getCellSize() / 2) / (getCellSize()));
@@ -232,7 +217,7 @@ public class Maze {
         Coordinate rt_moved = new Coordinate(p.x + getCellSize() / 2.3,
             p.y - getCellSize() / 2.3 - 1);
 
-        if (checkWall(lt_moved) || checkWall(rt_moved)) {
+        if (p.y < 0 + getTranslateY() || checkWall(lt_moved) || checkWall(rt_moved)) {
             return false;
         }
         else {
@@ -245,7 +230,8 @@ public class Maze {
         Coordinate rd_moved = new Coordinate(p.x + getCellSize() / 2.3,
             p.y + getCellSize() / 2.3 + 1);
 
-        if (checkWall(ld_moved) || checkWall(rd_moved)) {
+        if (p.y > getHeight() + getTranslateY() - getCellSize()
+            || checkWall(ld_moved) || checkWall(rd_moved)) {
             return false;
         }
         else {
@@ -259,7 +245,7 @@ public class Maze {
         Coordinate ld_moved = new Coordinate(p.x - getCellSize() / 2.3 - 1,
             p.y + getCellSize() / 2.3);
 
-        if (checkWall(lt_moved) || checkWall(ld_moved)) {
+        if (p.x < 0 + getTranslateX() || checkWall(lt_moved) || checkWall(ld_moved)) {
             return false;
         }
         else {
@@ -273,7 +259,8 @@ public class Maze {
         Coordinate rd_moved = new Coordinate(p.x + getCellSize() / 2.3 + 1,
             p.y + getCellSize() / 2.3);
 
-        if (checkWall(rt_moved) || checkWall(rd_moved)) {
+        if (p.x > getWidth() + getTranslateX() - getCellSize()
+            || checkWall(rt_moved) || checkWall(rd_moved)) {
             return false;
         }
         else {

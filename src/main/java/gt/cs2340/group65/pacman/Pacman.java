@@ -5,8 +5,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.Group;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 class Pacman extends ImageView {
     private int score = 0;
@@ -57,7 +55,7 @@ class Pacman extends ImageView {
 
     public void moveUp() {
         for (int i = 0; i < stepLength; i++) {
-            if (maze.checkUp(new Coordinate(getX(), getY()))) {
+            if (maze.checkUp(getLocation())) {
                 setY(getY() - 1);
                 try {
                     setImage(pacmanUp);
@@ -71,7 +69,7 @@ class Pacman extends ImageView {
 
     public void moveDown() {
         for (int i = 0; i < stepLength; i++) {
-            if (maze.checkDown(new Coordinate(getX(), getY()))) {
+            if (maze.checkDown(getLocation())) {
                 setY(getY() + 1);
                 try {
                     setImage(pacmanDown);
@@ -85,7 +83,7 @@ class Pacman extends ImageView {
 
     public void moveLeft() {
         for (int i = 0; i < stepLength; i++) {
-            if (maze.checkLeft(new Coordinate(getX(), getY()))) {
+            if (maze.checkLeft(getLocation())) {
                 setX(getX() - 1);
                 try {
                     setImage(pacmanLeft);
@@ -99,7 +97,7 @@ class Pacman extends ImageView {
 
     public void moveRight() {
         for (int i = 0; i < stepLength; i++) {
-            if (maze.checkRight(new Coordinate(getX(), getY()))) {
+            if (maze.checkRight(getLocation())) {
                 setX(getX() + 1);
                 try {
                     setImage(pacmanRight);
