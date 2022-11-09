@@ -18,6 +18,8 @@ public class Maze {
     private ImageView[][] imageViews;
     private Pellet[][] pellets;
 
+    private List<Monster> monsters;
+
     public Maze(int width, int height, int numRows, int numColumns,
                 int translateX, int translateY, Group root,
                 Coordinate pacmanStartLocation, Coordinate enemyStartLocation) {
@@ -27,6 +29,7 @@ public class Maze {
         this.numColumns = numColumns;
         this.translateX = translateX;
         this.translateY = translateY;
+        this.monsters = new ArrayList<Monster>();
         assert height / numRows == width / numColumns;
         grid = new char[numRows][numColumns];
         imageViews = new ImageView[numRows][numColumns];
@@ -153,6 +156,39 @@ public class Maze {
         }
     }
 
+    public void monsterList(Monster ghost) {
+        if (ghost != null) {
+            monsters.add(ghost);
+        }
+    }
+    public boolean pacmanMonsterCollision(Coordinate playerLocation) {
+        Coordinate firstMonster = monsters.get(0).getLocation();
+        Coordinate secondMonster = monsters.get(1).getLocation();
+        Coordinate thirdMonster = monsters.get(2).getLocation();
+        int playerX = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
+        int playerY = (int ) ((playerLocation.x - translateX + getCellSize() / 2) / (getCellSize()));
+        int firstX = (int) ((firstMonster.y - translateY + getCellSize() / 2) / (getCellSize()));
+        int firstY = (int ) ((firstMonster.x - translateX + getCellSize() / 2) / (getCellSize()));
+        int secondX = (int) ((secondMonster.y - translateY + getCellSize() / 2) / (getCellSize()));
+        int secondY = (int ) ((secondMonster.x - translateX + getCellSize() / 2) / (getCellSize()));
+        int thirdX = (int) ((thirdMonster.y - translateY + getCellSize() / 2) / (getCellSize()));
+        int thirdY = (int ) ((thirdMonster.x - translateX + getCellSize() / 2) / (getCellSize()));
+        if (playerX < numRows && playerX >= 0 && playerY < numColumns && playerY >= 0) {
+            if (playerX == firstX && playerY == firstY) {
+                return true;
+            }
+
+            if (playerX == secondX && playerY == secondY) {
+                return true;
+            }
+
+            if (playerX == thirdX && playerY == thirdY) {
+                return true;
+            }
+        }
+
+        return false;
+    }
     public int removePelle(Group root, Coordinate playerLocation) {
         int row = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
         int col = (int ) ((playerLocation.x - translateX + getCellSize() / 2) / (getCellSize()));

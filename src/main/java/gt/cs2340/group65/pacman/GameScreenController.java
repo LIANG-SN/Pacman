@@ -29,6 +29,8 @@ class GameScreenController {
     private Maze maze;
 
     private Label scoreLabel;
+    private Label playerLife;
+
     private int topBarHeight = 50;
     private boolean pause = false;
 
@@ -63,7 +65,9 @@ class GameScreenController {
             "file:src/main/resources/gt/cs2340/group65/pacman/images/YellowGhost.png"
         };
         for (int i = 0; i < numEnemy; i++) {
-            monsterEggs.add(new Monster(maze, enemyStartLocation, imagepaths[i]));
+            Monster ghost  = new Monster(maze, enemyStartLocation, imagepaths[i]);
+            maze.monsterList(ghost);
+            monsterEggs.add(ghost);
         }
         monsters.add(monsterEggs.poll());
         root.getChildren().add(monsters.get(0));
@@ -115,7 +119,7 @@ class GameScreenController {
         HBox playerInfoBar = new HBox(20);
         Label playerNameLabel = new Label("Player: " + playerName);
         scoreLabel = new Label("Score: " + pacman.getScore());
-        Label playerLife = new Label("Life: " + pacman.getPlayerLifes());
+        playerLife = new Label("Life: " + pacman.getPlayerLifes());
         Label round = new Label("Round: One");
         playerInfoBar.setAlignment(Pos.TOP_LEFT);
         playerInfoBar.getChildren().addAll(playerNameLabel, scoreLabel, playerLife, round);
@@ -157,6 +161,8 @@ class GameScreenController {
         timer = new AnimationTimer() {
             long lastTime = 0;
             int count = 0;
+
+            int countInvulnerable = 0;
             @Override
             public void handle(long time) {
 
@@ -184,8 +190,17 @@ class GameScreenController {
                             root.getChildren().add(monsters.get(monsters.size()-1));
                         }
                     }
+                    if (pacman.checkCollsion(pacman.getLocation())) {
+                        pacman.setInvulnerable(true);
+                    }
+                    if (countInvulnerable == 200) {
+                        pacman.setInvulnerable(false);
+                        countInvulnerable = 0;
+                    }
                     count++;
+                    countInvulnerable++;
                     scoreLabel.setText(("Score: " + pacman.getScore()));
+                    playerLife.setText("Life: " + pacman.getPlayerLifes());
                 }
             }
         };

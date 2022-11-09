@@ -92,4 +92,8 @@ public class Monster extends ImageView {
             }
         }
     }
+
+    public Coordinate getLocation() {
+        return new Coordinate(getX(), getY());
+    }
 }

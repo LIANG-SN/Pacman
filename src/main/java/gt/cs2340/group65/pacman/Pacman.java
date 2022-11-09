@@ -19,6 +19,8 @@ class Pacman extends ImageView {
     private Image pacmanUp;
     private Image pacmanDown;
 
+    private boolean invulnerable;
+
     public Pacman(Coordinate initialCoordinate, String imagePath, int playerLifes, Maze maze, String color, Group root) {
         super("file:" + imagePath);
         this.initialCoordinate = initialCoordinate;
@@ -31,6 +33,7 @@ class Pacman extends ImageView {
         setFitHeight(maze.getCellSize());
         this.color = color;
         this.root = root;
+        this.invulnerable = false;
         initImages();
     }
 
@@ -114,6 +117,16 @@ class Pacman extends ImageView {
         score = score + point;
     }
 
+    public boolean checkCollsion(Coordinate playerLocation) {
+        if (playerLocation != null) {
+            if (maze.pacmanMonsterCollision(playerLocation) && !isInvulnerable() && playerLifes > 0) {
+                playerLifes--;
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Coordinate getLocation() {
         return new Coordinate(getX(), getY());
     }
@@ -129,5 +142,13 @@ class Pacman extends ImageView {
 
     public int getPlayerLifes() {
         return playerLifes;
+    }
+
+    public void setInvulnerable(boolean immnue) {
+        this.invulnerable = immnue;
+    }
+
+    public boolean isInvulnerable() {
+        return this.invulnerable;
     }
 }
