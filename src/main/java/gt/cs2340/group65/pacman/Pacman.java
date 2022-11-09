@@ -117,7 +117,7 @@ class Pacman extends ImageView {
         score = score + point;
     }
 
-    public boolean checkCollsion(Coordinate playerLocation) {
+    public boolean checkCollision(Coordinate playerLocation) {
         if (playerLocation != null) {
             if (maze.pacmanMonsterCollision(playerLocation) && !isInvulnerable() && playerLifes > 0) {
                 playerLifes--;

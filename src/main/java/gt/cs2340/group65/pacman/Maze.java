@@ -162,18 +162,18 @@ public class Maze {
         }
     }
     public boolean pacmanMonsterCollision(Coordinate playerLocation) {
-        int playerX = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
-        int playerY = (int ) ((playerLocation.x - translateX + getCellSize() / 2) / (getCellSize()));
+        int playerRow = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
+        int playerCol = (int ) ((playerLocation.x - translateX + getCellSize() / 2) / (getCellSize()));
         Coordinate[] monstersLocation = new Coordinate[monsters.size()];
         for (int i = 0; i < monstersLocation.length; i++) {
             monstersLocation[i] = monsters.get(i).getLocation();
         }
 
         for (int i = 0; i < monstersLocation.length; i++) {
-            int monsterX = (int) ((monstersLocation[i].y - translateY + getCellSize() / 2) / (getCellSize()));
-            int monsterY = (int ) ((monstersLocation[i].x - translateX + getCellSize() / 2) / (getCellSize()));
-            if (playerX < numRows && playerX >= 0 && playerY < numColumns && playerY >= 0) {
-                if (playerX == monsterX && playerY == monsterY) {
+            int monsterRow = (int) ((monstersLocation[i].y - translateY + getCellSize() / 2) / (getCellSize()));
+            int monsterCol = (int ) ((monstersLocation[i].x - translateX + getCellSize() / 2) / (getCellSize()));
+            if (playerRow < numRows && playerRow >= 0 && playerCol < numColumns && playerCol >= 0) {
+                if (playerRow == monsterRow && playerCol == monsterCol) {
                     return true;
                 }
             }

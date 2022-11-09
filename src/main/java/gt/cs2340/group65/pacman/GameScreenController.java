@@ -190,7 +190,7 @@ class GameScreenController {
                             root.getChildren().add(monsters.get(monsters.size()-1));
                         }
                     }
-                    if (pacman.checkCollsion(pacman.getLocation())) {
+                    if (pacman.checkCollision(pacman.getLocation())) {
                         pacman.setInvulnerable(true);
                     }
                     if (countInvulnerable == 150) {
