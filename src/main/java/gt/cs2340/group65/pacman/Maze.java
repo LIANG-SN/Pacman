@@ -162,31 +162,22 @@ public class Maze {
         }
     }
     public boolean pacmanMonsterCollision(Coordinate playerLocation) {
-        Coordinate firstMonster = monsters.get(0).getLocation();
-        Coordinate secondMonster = monsters.get(1).getLocation();
-        Coordinate thirdMonster = monsters.get(2).getLocation();
         int playerX = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
         int playerY = (int ) ((playerLocation.x - translateX + getCellSize() / 2) / (getCellSize()));
-        int firstX = (int) ((firstMonster.y - translateY + getCellSize() / 2) / (getCellSize()));
-        int firstY = (int ) ((firstMonster.x - translateX + getCellSize() / 2) / (getCellSize()));
-        int secondX = (int) ((secondMonster.y - translateY + getCellSize() / 2) / (getCellSize()));
-        int secondY = (int ) ((secondMonster.x - translateX + getCellSize() / 2) / (getCellSize()));
-        int thirdX = (int) ((thirdMonster.y - translateY + getCellSize() / 2) / (getCellSize()));
-        int thirdY = (int ) ((thirdMonster.x - translateX + getCellSize() / 2) / (getCellSize()));
-        if (playerX < numRows && playerX >= 0 && playerY < numColumns && playerY >= 0) {
-            if (playerX == firstX && playerY == firstY) {
-                return true;
-            }
-
-            if (playerX == secondX && playerY == secondY) {
-                return true;
-            }
-
-            if (playerX == thirdX && playerY == thirdY) {
-                return true;
-            }
+        Coordinate[] monstersLocation = new Coordinate[monsters.size()];
+        for (int i = 0; i < monstersLocation.length; i++) {
+            monstersLocation[i] = monsters.get(i).getLocation();
         }
 
+        for (int i = 0; i < monstersLocation.length; i++) {
+            int monsterX = (int) ((monstersLocation[i].y - translateY + getCellSize() / 2) / (getCellSize()));
+            int monsterY = (int ) ((monstersLocation[i].x - translateX + getCellSize() / 2) / (getCellSize()));
+            if (playerX < numRows && playerX >= 0 && playerY < numColumns && playerY >= 0) {
+                if (playerX == monsterX && playerY == monsterY) {
+                    return true;
+                }
+            }
+        }
         return false;
     }
     public int removePelle(Group root, Coordinate playerLocation) {

@@ -193,7 +193,7 @@ class GameScreenController {
                     if (pacman.checkCollsion(pacman.getLocation())) {
                         pacman.setInvulnerable(true);
                     }
-                    if (countInvulnerable == 200) {
+                    if (countInvulnerable == 150) {
                         pacman.setInvulnerable(false);
                         countInvulnerable = 0;
                     }
