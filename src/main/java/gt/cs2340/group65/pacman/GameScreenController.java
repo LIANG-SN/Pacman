@@ -197,13 +197,13 @@ class GameScreenController {
                     if (pacman.checkCollision(pacman.getLocation())) {
                         pacman.setInvulnerable(true);
                         blink.setToValue(0.3);
-                        blink.playFrom(Duration.seconds(0.4));
+                        blink.playFrom(Duration.seconds(1.5));
                     }
-                    if (countInvulnerable == 300) {
+                    if (countInvulnerable == 250) {
                         pacman.setInvulnerable(false);
                         countInvulnerable = 0;
                         blink.setToValue(1.0);
-                        blink.playFrom(Duration.seconds(0.4));
+                        blink.playFrom(Duration.seconds(0.5));
                     }
                     count++;
                     countInvulnerable++;
