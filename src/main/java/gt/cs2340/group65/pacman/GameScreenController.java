@@ -11,6 +11,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
+
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
@@ -163,6 +166,7 @@ class GameScreenController {
             int count = 0;
 
             int countInvulnerable = 0;
+            FadeTransition blink = new FadeTransition(Duration.seconds(0.3), pacman);
             @Override
             public void handle(long time) {
 
@@ -192,10 +196,14 @@ class GameScreenController {
                     }
                     if (pacman.checkCollision(pacman.getLocation())) {
                         pacman.setInvulnerable(true);
+                        blink.setToValue(0.3);
+                        blink.playFrom(Duration.seconds(0.4));
                     }
-                    if (countInvulnerable == 150) {
+                    if (countInvulnerable == 300) {
                         pacman.setInvulnerable(false);
                         countInvulnerable = 0;
+                        blink.setToValue(1.0);
+                        blink.playFrom(Duration.seconds(0.4));
                     }
                     count++;
                     countInvulnerable++;
