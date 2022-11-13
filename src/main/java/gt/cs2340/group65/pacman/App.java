@@ -19,6 +19,8 @@ public class App extends Application {
     private static WelcomeScreen welcomeScreen;
     private static ConfigurationScreen configurationScreen;
 
+    private static GameOverScreen gameOverScreen;
+
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -26,6 +28,7 @@ public class App extends Application {
         welcomeScreen = new WelcomeScreen();
         welcomeScreen.display();
         configurationScreen = new ConfigurationScreen();
+        gameOverScreen = new GameOverScreen();
         stage.setTitle("PacMan Game");
         thisStage.show();
     }
@@ -46,6 +49,14 @@ public class App extends Application {
     public static void startConfigurationScreen() {
         try {
             configurationScreen.start();
+        } catch (IOException ioException) {
+            System.out.println("io exception occurs during starting config screen.");
+        }
+    }
+
+    public static void startGameOverScreen() {
+        try {
+            gameOverScreen.start();
         } catch (IOException ioException) {
             System.out.println("io exception occurs during starting config screen.");
         }
