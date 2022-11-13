@@ -5,8 +5,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.Group;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 class Pacman extends ImageView {
     private int score = 0;
@@ -21,6 +19,8 @@ class Pacman extends ImageView {
     private Image pacmanUp;
     private Image pacmanDown;
 
+    private boolean invulnerable;
+
     public Pacman(Coordinate initialCoordinate, String imagePath, int playerLifes, Maze maze, String color, Group root) {
         super("file:" + imagePath);
         this.initialCoordinate = initialCoordinate;
@@ -33,6 +33,7 @@ class Pacman extends ImageView {
         setFitHeight(maze.getCellSize());
         this.color = color;
         this.root = root;
+        this.invulnerable = false;
         initImages();
     }
 
@@ -57,7 +58,7 @@ class Pacman extends ImageView {
 
     public void moveUp() {
         for (int i = 0; i < stepLength; i++) {
-            if (maze.checkUp(new Coordinate(getX(), getY()))) {
+            if (maze.checkUp(getLocation())) {
                 setY(getY() - 1);
                 try {
                     setImage(pacmanUp);
@@ -71,7 +72,7 @@ class Pacman extends ImageView {
 
     public void moveDown() {
         for (int i = 0; i < stepLength; i++) {
-            if (maze.checkDown(new Coordinate(getX(), getY()))) {
+            if (maze.checkDown(getLocation())) {
                 setY(getY() + 1);
                 try {
                     setImage(pacmanDown);
@@ -85,7 +86,7 @@ class Pacman extends ImageView {
 
     public void moveLeft() {
         for (int i = 0; i < stepLength; i++) {
-            if (maze.checkLeft(new Coordinate(getX(), getY()))) {
+            if (maze.checkLeft(getLocation())) {
                 setX(getX() - 1);
                 try {
                     setImage(pacmanLeft);
@@ -99,7 +100,7 @@ class Pacman extends ImageView {
 
     public void moveRight() {
         for (int i = 0; i < stepLength; i++) {
-            if (maze.checkRight(new Coordinate(getX(), getY()))) {
+            if (maze.checkRight(getLocation())) {
                 setX(getX() + 1);
                 try {
                     setImage(pacmanRight);
@@ -114,6 +115,16 @@ class Pacman extends ImageView {
     private void eatPelle(Coordinate playerLocation) {
         int point = maze.removePelle(root, playerLocation);
         score = score + point;
+    }
+
+    public boolean checkCollision(Coordinate playerLocation) {
+        if (playerLocation != null) {
+            if (maze.pacmanMonsterCollision(playerLocation) && !isInvulnerable() && playerLifes > 0) {
+                playerLifes--;
+                return true;
+            }
+        }
+        return false;
     }
 
     public Coordinate getLocation() {
@@ -131,5 +142,13 @@ class Pacman extends ImageView {
 
     public int getPlayerLifes() {
         return playerLifes;
+    }
+
+    public void setInvulnerable(boolean immnue) {
+        this.invulnerable = immnue;
+    }
+
+    public boolean isInvulnerable() {
+        return this.invulnerable;
     }
 }

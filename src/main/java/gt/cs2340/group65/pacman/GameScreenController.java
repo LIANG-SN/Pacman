@@ -6,14 +6,18 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.animation.FadeTransition;
+import javafx.util.Duration;
 
-import java.io.FileNotFoundException;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 
 class GameScreenController {
     private boolean keyUp;
@@ -22,16 +26,20 @@ class GameScreenController {
     private boolean keyRight;
     private AnimationTimer timer;
     private Pacman pacman;
-    private Monster ghost;
     private Group root;
     private Scene scene;
     private GraphicsContext graphicsContext;
     private Maze maze;
 
     private Label scoreLabel;
+    private Label playerLife;
+
     private int topBarHeight = 50;
     private boolean pause = false;
-    private boolean useEnemyShowPath = false; // temp attribute to display path with monster
+
+    private int numEnemy = 3;
+    private Queue<Monster> monsterEggs;
+    private List<Monster> monsters;
 
     public GameScreenController(String playerName, String playerImagePath,
                                 int playerLifes, String color) {
@@ -43,18 +51,30 @@ class GameScreenController {
         scene = new Scene(root, maze.getWidth(), maze.getHeight() + topBarHeight);
         App.setScene(scene);
         pacman = new Pacman(pacmanStartLocation, playerImagePath, playerLifes, maze, color, root);
-        ghost = new Monster(maze, enemyStartLocation);
         root.getChildren().add(pacman);
-        root.getChildren().add(ghost);
+        initMonsters(enemyStartLocation);
         initPlayerInfoBar(playerName);
         initPauseButton();
         initMainScreenButton();
-        initEnemyShowPathButton();
-        initCanvas(0, topBarHeight);
         initEventHandler();
         initTimer();
     }
-
+    private void initMonsters(Coordinate enemyStartLocation){
+        monsterEggs = new ArrayDeque<Monster>();
+        monsters = new ArrayList<Monster>();
+        String imagepaths[] = new String[]{
+            "file:src/main/resources/gt/cs2340/group65/pacman/images/BlueGhost.png",
+            "file:src/main/resources/gt/cs2340/group65/pacman/images/RedGhost.png",
+            "file:src/main/resources/gt/cs2340/group65/pacman/images/YellowGhost.png"
+        };
+        for (int i = 0; i < numEnemy; i++) {
+            Monster ghost  = new Monster(maze, enemyStartLocation, imagepaths[i]);
+            maze.monsterList(ghost);
+            monsterEggs.add(ghost);
+        }
+        monsters.add(monsterEggs.poll());
+        root.getChildren().add(monsters.get(0));
+    }
     private void initEventHandler() {
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
@@ -102,7 +122,7 @@ class GameScreenController {
         HBox playerInfoBar = new HBox(20);
         Label playerNameLabel = new Label("Player: " + playerName);
         scoreLabel = new Label("Score: " + pacman.getScore());
-        Label playerLife = new Label("Life: " + pacman.getPlayerLifes());
+        playerLife = new Label("Life: " + pacman.getPlayerLifes());
         Label round = new Label("Round: One");
         playerInfoBar.setAlignment(Pos.TOP_LEFT);
         playerInfoBar.getChildren().addAll(playerNameLabel, scoreLabel, playerLife, round);
@@ -140,61 +160,59 @@ class GameScreenController {
         root.getChildren().add(mainScreenButton);
     }
 
-    private void initEnemyShowPathButton() {
-        Button button = new Button("Show path using enemy");
-        button.setTranslateX(scene.getWidth() / 2 + 130);
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                useEnemyShowPath = true;
-                maze.hideMaze(root);
-            }
-        });
-        button.setFocusTraversable(false);
-        root.getChildren().add(button);
-    }
-
-    private void initCanvas(int translateX, int translateY) {
-        Canvas canvas = new Canvas(maze.getWidth(), maze.getHeight());
-        canvas.setTranslateX(translateX);
-        canvas.setTranslateY(translateY);
-        root.getChildren().add(canvas);
-        graphicsContext = canvas.getGraphicsContext2D();
-        graphicsContext.setLineWidth(2);
-    }
-
     private void initTimer() {
         timer = new AnimationTimer() {
             long lastTime = 0;
+            int count = 0;
+
+            int countInvulnerable = 0;
+            FadeTransition blink = new FadeTransition(Duration.seconds(0.3), pacman);
             @Override
             public void handle(long time) {
 
                 if (!pause && (time - lastTime > 1e7) ) {
-                    Coordinate coordinate = pacman.getLocation();
-                    if (keyUp && coordinate.y > 0 + maze.getTranslateY()) {
+                    if (keyUp) {
                             pacman.moveUp();
                     }
-                    if (keyDown && coordinate.y < maze.getHeight()
-                        - maze.getCellSize() + maze.getTranslateY()) {
+                    if (keyDown) {
                             pacman.moveDown();
                     }
-                    if (keyLeft && coordinate.x > 0 + maze.getTranslateX()) {
+                    if (keyLeft) {
                             pacman.moveLeft();
                     }
-                    if (keyRight && coordinate.x < maze.getWidth()
-                        - maze.getCellSize() + maze.getTranslateX()) {
+                    if (keyRight) {
                             pacman.moveRight();
                     }
-                    if (useEnemyShowPath) {
-                        double pathStartX = ghost.getX() + maze.getCellSize() / 4;
-                        double pathStartY = ghost.getY() - maze.getCellSize();
-                        ghost.update();
-                        double pathEndX = ghost.getX() + maze.getCellSize() / 4;
-                        double pathEndY = ghost.getY() - maze.getCellSize();
-                        graphicsContext.strokeLine(pathStartX, pathStartY, pathEndX, pathEndY);
+                    for(int i = 0; i < monsters.size(); i++) {
+                        monsters.get(i).update();
                     }
                     lastTime = time;
+                    if (count == 500){
+                        count = 0;
+                        if (monsterEggs.size() > 0) {
+                            monsters.add(monsterEggs.poll());
+                            root.getChildren().add(monsters.get(monsters.size()-1));
+                        }
+                    }
+                    if (pacman.checkCollision(pacman.getLocation())) {
+                        pacman.setInvulnerable(true);
+                        blink.setToValue(0.3);
+                        blink.playFrom(Duration.seconds(1.5));
+                    }
+                    if (countInvulnerable == 250) {
+                        pacman.setInvulnerable(false);
+                        countInvulnerable = 0;
+                        blink.setToValue(1.0);
+                        blink.playFrom(Duration.seconds(0.5));
+                    }
+                    count++;
+                    countInvulnerable++;
                     scoreLabel.setText(("Score: " + pacman.getScore()));
+                    playerLife.setText("Life: " + pacman.getPlayerLifes());
+                    if (pacman.getPlayerLifes() <= 0) {
+                        App.startGameOverScreen();
+                        timer.stop();
+                    }
                 }
             }
         };
