@@ -58,7 +58,7 @@ public class App extends Application {
         try {
             gameOverScreen.start();
         } catch (IOException ioException) {
-            System.out.println("io exception occurs during starting config screen.");
+            System.out.println("io exception occurs during starting game over screen.");
         }
     }
 
