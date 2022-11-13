@@ -209,6 +209,10 @@ class GameScreenController {
                     countInvulnerable++;
                     scoreLabel.setText(("Score: " + pacman.getScore()));
                     playerLife.setText("Life: " + pacman.getPlayerLifes());
+                    if (pacman.getPlayerLifes() <= 0) {
+                        App.startGameOverScreen();
+                        timer.stop();
+                    }
                 }
             }
         };
