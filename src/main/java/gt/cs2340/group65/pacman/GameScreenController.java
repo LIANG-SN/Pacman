@@ -68,11 +68,12 @@ class GameScreenController {
             "file:src/main/resources/gt/cs2340/group65/pacman/images/YellowGhost.png"
         };
         for (int i = 0; i < numEnemy; i++) {
-            Monster ghost  = new Monster(maze, enemyStartLocation, imagepaths[i]);
+            Monster ghost  = new Monster(maze, enemyStartLocation, imagepaths[i], false);
             maze.monsterList(ghost);
             monsterEggs.add(ghost);
         }
         monsters.add(monsterEggs.poll());
+        monsters.get(0).setSpawned(true);
         root.getChildren().add(monsters.get(0));
     }
     private void initEventHandler() {
@@ -164,6 +165,7 @@ class GameScreenController {
         timer = new AnimationTimer() {
             long lastTime = 0;
             int count = 0;
+            int countMonster = 1;
 
             int countInvulnerable = 0;
             FadeTransition blink = new FadeTransition(Duration.seconds(0.3), pacman);
@@ -191,6 +193,8 @@ class GameScreenController {
                         count = 0;
                         if (monsterEggs.size() > 0) {
                             monsters.add(monsterEggs.poll());
+                            monsters.get(countMonster).setSpawned(true);
+                            countMonster++;
                             root.getChildren().add(monsters.get(monsters.size()-1));
                         }
                     }
