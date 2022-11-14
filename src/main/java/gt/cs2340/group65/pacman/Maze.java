@@ -170,10 +170,11 @@ public class Maze {
         }
 
         for (int i = 0; i < monstersLocation.length; i++) {
+            boolean spawned = monsters.get(i).isSpawned();
             int monsterRow = (int) ((monstersLocation[i].y - translateY + getCellSize() / 2) / (getCellSize()));
             int monsterCol = (int ) ((monstersLocation[i].x - translateX + getCellSize() / 2) / (getCellSize()));
             if (playerRow < numRows && playerRow >= 0 && playerCol < numColumns && playerCol >= 0) {
-                if (playerRow == monsterRow && playerCol == monsterCol) {
+                if (playerRow == monsterRow && playerCol == monsterCol && spawned) {
                     return true;
                 }
             }

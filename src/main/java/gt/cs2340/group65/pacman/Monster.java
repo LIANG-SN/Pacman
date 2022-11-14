@@ -12,14 +12,17 @@ public class Monster extends ImageView {
     private double xDirection;
     private double yDirection;
 
+    private boolean isSpawned;
+
     private Maze maze;
 
     private int stepSize = 3;
 
 
-    public Monster(Maze maze, Coordinate startLocation, String imagePath) {
+    public Monster(Maze maze, Coordinate startLocation, String imagePath, boolean spawned) {
         super(imagePath);
         this.maze = maze;
+        this.isSpawned = spawned;
         this.setPreserveRatio(false);
         this.setFitWidth(maze.getCellSize());
         this.setFitHeight(maze.getCellSize());
@@ -95,5 +98,13 @@ public class Monster extends ImageView {
 
     public Coordinate getLocation() {
         return new Coordinate(getX(), getY());
+    }
+
+    public boolean isSpawned() {
+        return this.isSpawned;
+    }
+
+    public void setSpawned(boolean spawned) {
+        this.isSpawned = spawned;
     }
 }
