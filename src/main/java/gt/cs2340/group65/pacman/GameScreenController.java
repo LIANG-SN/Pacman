@@ -46,10 +46,11 @@ class GameScreenController {
         root = new Group();
         Coordinate pacmanStartLocation = new Coordinate(0, 0);
         Coordinate enemyStartLocation = new Coordinate(320, 320);
-        maze = new Maze(600, 600, 15, 15, 0, topBarHeight, root,
-            pacmanStartLocation, enemyStartLocation);
+        maze = new Maze(600, 600, 15, 15, 0, topBarHeight,
+             pacmanStartLocation, enemyStartLocation);
+        maze.displayMaze(root);
         scene = new Scene(root, maze.getWidth(), maze.getHeight() + topBarHeight);
-        App.setScene(scene);
+//        App.setScene(scene);
         pacman = new Pacman(pacmanStartLocation, playerImagePath, playerLifes, maze, color, root);
         root.getChildren().add(pacman);
         initMonsters(enemyStartLocation);
@@ -58,6 +59,9 @@ class GameScreenController {
         initMainScreenButton();
         initEventHandler();
         initTimer();
+    }
+    public Scene getScene() {
+        return this.scene;
     }
     private void initMonsters(Coordinate enemyStartLocation){
         monsterEggs = new ArrayDeque<Monster>();
@@ -221,6 +225,15 @@ class GameScreenController {
             }
         };
         timer.start();
+    }
+
+    public Group getRoot()
+    {
+        return root;
+    }
+
+    public Maze getMaze() {
+        return maze;
     }
 
     private void switchToMainScreen() {

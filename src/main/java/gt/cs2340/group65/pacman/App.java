@@ -67,6 +67,7 @@ public class App extends Application {
                                        int playerLifes, String color) {
         gameScreenController = new GameScreenController(playerName,
             playerImagePath, playerLifes, color);
+        setScene(gameScreenController.getScene());
     }
 
 
@@ -84,4 +85,10 @@ public class App extends Application {
         launch();
     }
 
+}
+// TestFx does not work with `module-info.java`. Add a launcher to get rid of it.
+class MyAppLauncher {
+    public static void main(String[] args) {
+        App.main(args);
+    }
 }

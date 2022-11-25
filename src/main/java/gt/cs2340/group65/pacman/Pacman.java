@@ -131,11 +131,6 @@ class Pacman extends ImageView {
         return new Coordinate(getX(), getY());
     }
 
-
-    public void setScore(int score) {
-        this.score = score;
-    }
-
     public int getScore() {
         return score;
     }

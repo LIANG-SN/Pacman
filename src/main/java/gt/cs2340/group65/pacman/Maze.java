@@ -21,7 +21,7 @@ public class Maze {
     private List<Monster> monsters;
 
     public Maze(int width, int height, int numRows, int numColumns,
-                int translateX, int translateY, Group root,
+                int translateX, int translateY,
                 Coordinate pacmanStartLocation, Coordinate enemyStartLocation) {
         this.width = width;
         this.height = height;
@@ -56,7 +56,7 @@ public class Maze {
                [(int) (enemyStartLocation.y / getCellSize())] = null;
         pellets[(int) (pacmanStartLocation.x / getCellSize())]
                 [(int) (pacmanStartLocation.y / getCellSize())] = null;
-        displayMaze(root);
+//        displayMaze(root);
     }
     private void removeDeadend(){
         for (int i = 0; i < numRows; i++) {
@@ -205,9 +205,9 @@ public class Maze {
         return pellets[x][y].getPoint();
     }
 
-    public Coordinate getPelleLocation(int x, int y) {
-        return pellets[x][y].getLocation();
-    }
+//    public Coordinate getPelleLocation(int x, int y) {
+//        return pellets[x][y].getLocation();
+//    }
     public double getCellSize() {
         return height / numRows;
     }
@@ -294,5 +294,8 @@ public class Maze {
         else {
             return true;
         }
+    }
+    public char getGrid(int row, int col){
+        return grid[row][col];
     }
 }
