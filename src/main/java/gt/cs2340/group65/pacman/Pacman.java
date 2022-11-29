@@ -1,5 +1,6 @@
 package gt.cs2340.group65.pacman;
 
+import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.Group;
@@ -27,6 +28,7 @@ class Pacman extends ImageView {
 
     private boolean invulnerable;
     private boolean attackAbility = false;
+    private boolean doublePoints;
     private int speedUp = 1;
 
     public Pacman(Coordinate initialCoordinate, String imagePath, int playerLifes, Maze maze, String color, Group root) {
@@ -83,6 +85,9 @@ class Pacman extends ImageView {
                     else {
                         setImage(pacmanUp);
                     }
+                    if(doublePoints) {
+                       setEffect(new Glow(0.8));
+                    }
                 } catch (Exception e) {
                     System.out.println("something was wrong with image file");
                 }
@@ -101,6 +106,9 @@ class Pacman extends ImageView {
                     }
                     else {
                         setImage(pacmanDown);
+                    }
+                    if(doublePoints) {
+                        setEffect(new Glow(0.8));
                     }
                 } catch (Exception e) {
                     System.out.println("something was wrong with image file");
@@ -121,6 +129,9 @@ class Pacman extends ImageView {
                     else {
                         setImage(pacmanLeft);
                     }
+                    if(doublePoints) {
+                        setEffect(new Glow(0.8));
+                    }
                 } catch (Exception e) {
                     System.out.println("something was wrong with image file");
                 }
@@ -140,6 +151,9 @@ class Pacman extends ImageView {
                     else {
                         setImage(pacmanRight);
                     }
+                    if(doublePoints) {
+                        setEffect(new Glow(0.8));
+                    }
                 } catch (Exception e) {
                     System.out.println("something was wrong with image file");
                 }
@@ -155,6 +169,13 @@ class Pacman extends ImageView {
         }
         else if(point == 2) {
             initSpeedUp();
+        }
+        else if(point == -1) {
+            initDoublePoints();
+            point = 0;
+        }
+        if(doublePoints) {
+            point *= 2;
         }
         score = score + point;
     }
@@ -184,6 +205,20 @@ class Pacman extends ImageView {
                 }
             },
             3000
+        );
+    }
+
+    private void initDoublePoints() {
+        doublePoints = true;
+        new Timer().schedule(
+            new TimerTask() {
+                @Override
+                public void run() {
+                    doublePoints = false;
+                    setEffect(null);
+                }
+            },
+            4000
         );
     }
 

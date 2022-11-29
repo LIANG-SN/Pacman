@@ -133,15 +133,15 @@ public class Maze {
 
                 if (grid[i][j] == '0') {
                     double random = Math.random();
-                        if (random < 0.1){
-                            pellets[i][j] = new Pellet(
-                                "src/main/resources/gt/cs2340/group65/pacman/images/specialPelle.png", true, 100);
+                        if (random < 0.03){
+                            pellets[i][j] = new DoublePellet(
+                                "src/main/resources/gt/cs2340/group65/pacman/images/doublePelle.png", true);
                         }
-                        else if (random < 0.15){
+                        else if (random < 0.06){
                             pellets[i][j] = new SpeedPellet(
                                 "src/main/resources/gt/cs2340/group65/pacman/images/fastPellet.png", true);
                         }
-                        else if (random < 0.2) {
+                        else if (random < 0.09) {
                             pellets[i][j] = new AttackPellet(
                                 "src/main/resources/gt/cs2340/group65/pacman/images/attackPellet.png", true);
                         } else {
