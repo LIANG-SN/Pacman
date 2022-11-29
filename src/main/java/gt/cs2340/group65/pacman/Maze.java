@@ -134,23 +134,24 @@ public class Maze {
 
                 if (grid[i][j] == '0') {
                     double random = Math.random();
-                    if (random > 0.10) {
-                        pellets[i][j].setPreserveRatio(false);
-                        pellets[i][j].setFitWidth(getCellSize());
-                        pellets[i][j].setFitHeight(getCellSize());
-                        pellets[i][j].setX(j * getCellSize() + translateX);
-                        pellets[i][j].setY(i * getCellSize() + translateY);
-                        root.getChildren().add(pellets[i][j]);
-                    } else {
-                        pellets[i][j] = new Pellet(
-                            "src/main/resources/gt/cs2340/group65/pacman/images/specialPelle.png", true, 100);
-                        pellets[i][j].setPreserveRatio(false);
-                        pellets[i][j].setFitWidth(getCellSize());
-                        pellets[i][j].setFitHeight(getCellSize());
-                        pellets[i][j].setX(j * getCellSize() + translateX);
-                        pellets[i][j].setY(i * getCellSize() + translateY);
-                        root.getChildren().add(pellets[i][j]);
+                        if (random < 0.1){
+                            pellets[i][j] = new Pellet(
+                                "src/main/resources/gt/cs2340/group65/pacman/images/specialPelle.png", true, 100);
+                        }
+                        else if (random < 0.15){
+                            pellets[i][j] = new SpeedPellet(
+                                "src/main/resources/gt/cs2340/group65/pacman/images/fastPellet.png", true);
+                        }
+                        else if (random < 0.2) {
+                            pellets[i][j] = new AttackPellet(
+                                "src/main/resources/gt/cs2340/group65/pacman/images/attackPellet.png", true);
                     }
+                    pellets[i][j].setPreserveRatio(false);
+                    pellets[i][j].setFitWidth(getCellSize());
+                    pellets[i][j].setFitHeight(getCellSize());
+                    pellets[i][j].setX(j * getCellSize() + translateX);
+                    pellets[i][j].setY(i * getCellSize() + translateY);
+                    root.getChildren().add(pellets[i][j]);
                 }
             }
         }
