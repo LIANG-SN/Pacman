@@ -1,8 +1,10 @@
 package gt.cs2340.group65.pacman;
 
+import javafx.animation.FadeTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.Group;
+import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.util.Timer;
@@ -28,7 +30,7 @@ class Pacman extends ImageView {
     private boolean invulnerable;
     private boolean attackAbility = false;
     private int speedUp = 1;
-
+    private FadeTransition fade;
     public Pacman(Coordinate initialCoordinate, String imagePath, int playerLifes, Maze maze, String color, Group root) {
         super("file:" + imagePath);
         this.initialCoordinate = initialCoordinate;
@@ -42,6 +44,7 @@ class Pacman extends ImageView {
         this.color = color;
         this.root = root;
         this.invulnerable = false;
+        this.fade = new FadeTransition(Duration.seconds(0.3), this);
         initImages();
     }
 
@@ -161,6 +164,8 @@ class Pacman extends ImageView {
     private void initAttackAbility() {
         attackAbility = true;
         invulnerable = true;
+        fade.setToValue(1.0);
+        fade.playFrom(Duration.seconds(0.5));
         setImage(attackUp);
         new Timer().schedule(
             new TimerTask() {

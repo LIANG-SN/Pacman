@@ -209,8 +209,6 @@ class GameScreenController {
                         int monsterIndex = monsters.get(checkCollision).getMarkedNumber();
                         monsters.remove(checkCollision);
                         pacman.addScore(maze.removeMonster(root, checkCollision));
-                        blink.setToValue(1.0);
-                        blink.playFrom(Duration.seconds(0.5));
                         countMonster--;
                         if(monsters.size() < numEnemy) {
                             count = 0;
@@ -239,6 +237,7 @@ class GameScreenController {
                     }
 
                     if (maze.checkWinCondition()) {
+                        // add win screen here, replace it with gameover screen
                         App.startGameOverScreen();
                         timer.stop();
                     }
