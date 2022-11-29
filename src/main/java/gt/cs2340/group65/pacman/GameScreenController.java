@@ -22,7 +22,7 @@ class GameScreenController {
     private boolean keyLeft;
     private boolean keyRight;
     private AnimationTimer timer;
-    private Pacman pacman;
+    public static Pacman pacman;
     private Group root;
     private Scene scene;
     private GraphicsContext graphicsContext;
@@ -239,7 +239,7 @@ class GameScreenController {
                     }
 
                     if (maze.checkWinCondition()) {
-                        App.startGameOverScreen();
+                        App.startWinScreen();
                         timer.stop();
                     }
                 }

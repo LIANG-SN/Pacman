@@ -21,7 +21,7 @@ import javafx.scene.control.Label;
 public class ConfigurationScreen {
     private String name;
     private String difficulty;
-    private int startingLives;
+    public static int startingLives;
     private String pacmanImageSelected;
 
     public void start() throws IOException {
