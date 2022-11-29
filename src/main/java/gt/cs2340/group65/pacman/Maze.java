@@ -17,6 +17,7 @@ public class Maze {
     private char[][] grid;
     private ImageView[][] imageViews;
     private Pellet[][] pellets;
+    public static int numPellets;
 
     private List<Monster> monsters;
 
@@ -133,15 +134,15 @@ public class Maze {
 
                 if (grid[i][j] == '0') {
                     double random = Math.random();
-                        if (random < 0.1){
-                            pellets[i][j] = new Pellet(
-                                "src/main/resources/gt/cs2340/group65/pacman/images/specialPelle.png", true, 100);
+                        if (random < 0.03){
+                            pellets[i][j] = new DoublePellet(
+                                "src/main/resources/gt/cs2340/group65/pacman/images/doublePelle.png", true);
                         }
-                        else if (random < 0.15){
+                        else if (random < 0.06){
                             pellets[i][j] = new SpeedPellet(
                                 "src/main/resources/gt/cs2340/group65/pacman/images/fastPellet.png", true);
                         }
-                        else if (random < 0.2) {
+                        else if (random < 0.09) {
                             pellets[i][j] = new AttackPellet(
                                 "src/main/resources/gt/cs2340/group65/pacman/images/attackPellet.png", true);
                         } else {
@@ -154,6 +155,7 @@ public class Maze {
                         pellets[i][j].setX(j * getCellSize() + translateX);
                         pellets[i][j].setY(i * getCellSize() + translateY);
                         root.getChildren().add(pellets[i][j]);
+                        numPellets++;
                     }
                 }
             }
@@ -197,6 +199,7 @@ public class Maze {
                 pellets[row][col].setFitHeight(getCellSize());
                 root.getChildren().remove(pellets[row][col]);
                 pellets[row][col] = null;
+                numPellets--;
             }
         }
         return point;
@@ -212,14 +215,15 @@ public class Maze {
     }
 
     public boolean checkWinCondition() {
-        for (int i = 0; i < pellets.length; i++) {
-            for (int j = 0; j < pellets[i].length; j++) {
-                if(pellets[i][j] != null) {
-                    return false;
-                }
-            }
-        }
-        return true;
+//        for (int i = 0; i < pellets.length; i++) {
+//            for (int j = 0; j < pellets[i].length; j++) {
+//                if(pellets[i][j] != null) {
+//                    return false;
+//                }
+//            }
+//        }
+//        return true;
+        return numPellets == 0;
     }
 
     public boolean checkPelle(int x, int y) {
