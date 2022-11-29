@@ -237,6 +237,11 @@ class GameScreenController {
                         App.startGameOverScreen();
                         timer.stop();
                     }
+
+                    if (maze.checkWinCondition()) {
+                        App.startGameOverScreen();
+                        timer.stop();
+                    }
                 }
             }
         };

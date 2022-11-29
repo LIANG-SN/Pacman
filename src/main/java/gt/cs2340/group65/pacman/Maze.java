@@ -211,6 +211,17 @@ public class Maze {
         return 0;
     }
 
+    public boolean checkWinCondition() {
+        for (int i = 0; i < pellets.length; i++) {
+            for (int j = 0; j < pellets[i].length; j++) {
+                if(pellets[i][j] != null) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public boolean checkPelle(int x, int y) {
         return pellets[x][y] != null;
     }
