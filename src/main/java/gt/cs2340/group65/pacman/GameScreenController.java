@@ -48,7 +48,6 @@ class GameScreenController {
         maze = new Maze(600, 600, 15, 15, 0, topBarHeight,
              root, pacmanStartLocation, enemyStartLocation);
         scene = new Scene(root, maze.getWidth(), maze.getHeight() + topBarHeight);
-//        App.setScene(scene);
         pacman = new Pacman(pacmanStartLocation, playerImagePath, playerLifes, maze, color, root);
         root.getChildren().add(pacman);
         initMonsters(enemyStartLocation);
@@ -247,15 +246,6 @@ class GameScreenController {
             }
         };
         timer.start();
-    }
-
-    public Group getRoot()
-    {
-        return root;
-    }
-
-    public Maze getMaze() {
-        return maze;
     }
 
     private void switchToMainScreen() {
