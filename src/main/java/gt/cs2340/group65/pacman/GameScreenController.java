@@ -14,10 +14,7 @@ import javafx.scene.layout.HBox;
 import javafx.animation.FadeTransition;
 import javafx.util.Duration;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 class GameScreenController {
     private boolean keyUp;
@@ -25,7 +22,7 @@ class GameScreenController {
     private boolean keyLeft;
     private boolean keyRight;
     private AnimationTimer timer;
-    private Pacman pacman;
+    public static Pacman pacman;
     private Group root;
     private Scene scene;
     private GraphicsContext graphicsContext;
@@ -40,6 +37,8 @@ class GameScreenController {
     private int numEnemy = 3;
     private Queue<Monster> monsterEggs;
     private List<Monster> monsters;
+    private String[] monsterImagepaths;
+    private Coordinate enemyStartLocation;
 
     public GameScreenController(String playerName, String playerImagePath,
                                 int playerLifes, String color) {
@@ -63,15 +62,16 @@ class GameScreenController {
         return this.scene;
     }
     private void initMonsters(Coordinate enemyStartLocation){
+        this.enemyStartLocation = enemyStartLocation;
         monsterEggs = new ArrayDeque<Monster>();
         monsters = new ArrayList<Monster>();
-        String imagepaths[] = new String[]{
+        monsterImagepaths = new String[]{
             "file:src/main/resources/gt/cs2340/group65/pacman/images/BlueGhost.png",
             "file:src/main/resources/gt/cs2340/group65/pacman/images/RedGhost.png",
             "file:src/main/resources/gt/cs2340/group65/pacman/images/YellowGhost.png"
         };
         for (int i = 0; i < numEnemy; i++) {
-            Monster ghost  = new Monster(maze, enemyStartLocation, imagepaths[i], false);
+            Monster ghost  = new Monster(maze, enemyStartLocation, monsterImagepaths[i], false, i);
             maze.monsterList(ghost);
             monsterEggs.add(ghost);
         }
@@ -164,6 +164,12 @@ class GameScreenController {
         root.getChildren().add(mainScreenButton);
     }
 
+    private void addNewMonster(int markedNumber){
+        Monster ghost  = new Monster(maze, enemyStartLocation, monsterImagepaths[markedNumber], false, markedNumber);
+        maze.monsterList(ghost);
+        monsterEggs.add(ghost);
+    }
+
     private void initTimer() {
         timer = new AnimationTimer() {
             long lastTime = 0;
@@ -201,12 +207,24 @@ class GameScreenController {
                             root.getChildren().add(monsters.get(monsters.size()-1));
                         }
                     }
-                    if (pacman.checkCollision(pacman.getLocation())) {
+                    int checkCollision = pacman.checkCollision(pacman.getLocation());
+                    if (checkCollision != -1 && pacman.getAttackAbility()) {
+                        int monsterIndex = monsters.get(checkCollision).getMarkedNumber();
+                        monsters.remove(checkCollision);
+                        pacman.addScore(maze.removeMonster(root, checkCollision));
+                        countMonster--;
+                        if(monsters.size() < numEnemy) {
+                            count = 0;
+                            addNewMonster(monsterIndex);
+                        }
+                    } else if (checkCollision != -1) {
                         pacman.setInvulnerable(true);
+                        countInvulnerable = 0;
                         blink.setToValue(0.3);
                         blink.playFrom(Duration.seconds(1.5));
                     }
-                    if (countInvulnerable == 250) {
+
+                    if (countInvulnerable > 250 && !pacman.getAttackAbility()) {
                         pacman.setInvulnerable(false);
                         countInvulnerable = 0;
                         blink.setToValue(1.0);
@@ -218,6 +236,11 @@ class GameScreenController {
                     playerLife.setText("Life: " + pacman.getPlayerLifes());
                     if (pacman.getPlayerLifes() <= 0) {
                         App.startGameOverScreen();
+                        timer.stop();
+                    }
+
+                    if (maze.checkWinCondition()) {
+                        App.startWinScreen();
                         timer.stop();
                     }
                 }

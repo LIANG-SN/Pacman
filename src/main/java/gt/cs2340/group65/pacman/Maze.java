@@ -17,6 +17,7 @@ public class Maze {
     private char[][] grid;
     private ImageView[][] imageViews;
     private Pellet[][] pellets;
+    public static int numPellets;
 
     private List<Monster> monsters;
 
@@ -40,7 +41,6 @@ public class Maze {
 
                 imageViews[i][j] = new ImageView(
                     "file:src/main/resources/gt/cs2340/group65/pacman/images/brick_wall.png");
-                pellets[i][j] = new Pellet("src/main/resources/gt/cs2340/group65/pacman/images/normalPelle.png", false, 10);
             }
         }
         generateMaze(grid, (int) (pacmanStartLocation.x / getCellSize()),
@@ -134,22 +134,28 @@ public class Maze {
 
                 if (grid[i][j] == '0') {
                     double random = Math.random();
-                    if (random > 0.10) {
+                        if (random < 0.03){
+                            pellets[i][j] = new DoublePellet(
+                                "src/main/resources/gt/cs2340/group65/pacman/images/doublePelle.png", true);
+                        }
+                        else if (random < 0.06){
+                            pellets[i][j] = new SpeedPellet(
+                                "src/main/resources/gt/cs2340/group65/pacman/images/fastPellet.png", true);
+                        }
+                        else if (random < 0.09) {
+                            pellets[i][j] = new AttackPellet(
+                                "src/main/resources/gt/cs2340/group65/pacman/images/attackPellet.png", true);
+                        } else {
+                            pellets[i][j] = new Pellet("src/main/resources/gt/cs2340/group65/pacman/images/normalPelle.png", false, 10);
+                        }
+                    if (pellets[i][j] != null) {
                         pellets[i][j].setPreserveRatio(false);
                         pellets[i][j].setFitWidth(getCellSize());
                         pellets[i][j].setFitHeight(getCellSize());
                         pellets[i][j].setX(j * getCellSize() + translateX);
                         pellets[i][j].setY(i * getCellSize() + translateY);
                         root.getChildren().add(pellets[i][j]);
-                    } else {
-                        pellets[i][j] = new Pellet(
-                            "src/main/resources/gt/cs2340/group65/pacman/images/specialPelle.png", true, 100);
-                        pellets[i][j].setPreserveRatio(false);
-                        pellets[i][j].setFitWidth(getCellSize());
-                        pellets[i][j].setFitHeight(getCellSize());
-                        pellets[i][j].setX(j * getCellSize() + translateX);
-                        pellets[i][j].setY(i * getCellSize() + translateY);
-                        root.getChildren().add(pellets[i][j]);
+                        numPellets++;
                     }
                 }
             }
@@ -161,7 +167,7 @@ public class Maze {
             monsters.add(ghost);
         }
     }
-    public boolean pacmanMonsterCollision(Coordinate playerLocation) {
+    public int pacmanMonsterCollision(Coordinate playerLocation) {
         int playerRow = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
         int playerCol = (int ) ((playerLocation.x - translateX + getCellSize() / 2) / (getCellSize()));
         Coordinate[] monstersLocation = new Coordinate[monsters.size()];
@@ -175,11 +181,11 @@ public class Maze {
             int monsterCol = (int ) ((monstersLocation[i].x - translateX + getCellSize() / 2) / (getCellSize()));
             if (playerRow < numRows && playerRow >= 0 && playerCol < numColumns && playerCol >= 0) {
                 if (playerRow == monsterRow && playerCol == monsterCol && spawned) {
-                    return true;
+                    return i;
                 }
             }
         }
-        return false;
+        return -1;
     }
     public int removePelle(Group root, Coordinate playerLocation) {
         int row = (int) ((playerLocation.y - translateY + getCellSize() / 2) / (getCellSize()));
@@ -193,10 +199,33 @@ public class Maze {
                 pellets[row][col].setFitHeight(getCellSize());
                 root.getChildren().remove(pellets[row][col]);
                 pellets[row][col] = null;
+                numPellets--;
             }
         }
         return point;
     }
+
+    public int removeMonster(Group root, int monsterIndex) {
+        if (monsters.get(monsterIndex) != null || root != null) {
+            root.getChildren().remove(monsters.get(monsterIndex));
+            monsters.remove(monsterIndex);
+            return 200;
+        }
+        return 0;
+    }
+
+    public boolean checkWinCondition() {
+//        for (int i = 0; i < pellets.length; i++) {
+//            for (int j = 0; j < pellets[i].length; j++) {
+//                if(pellets[i][j] != null) {
+//                    return false;
+//                }
+//            }
+//        }
+//        return true;
+        return numPellets == 0;
+    }
+
     public boolean checkPelle(int x, int y) {
         return pellets[x][y] != null;
     }

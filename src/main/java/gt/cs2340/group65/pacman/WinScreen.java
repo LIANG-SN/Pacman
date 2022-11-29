@@ -1,18 +1,16 @@
 package gt.cs2340.group65.pacman;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import java.io.IOException;
-import java.io.FileInputStream;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -21,12 +19,14 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-public class GameOverScreen {
+import java.io.FileInputStream;
+import java.io.IOException;
 
+public class WinScreen {
     public void start() throws IOException {
-
-        Text gameOverText = new Text("Game Over");
-        gameOverText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 45));
+        Text winText = new Text("You won!!!");
+        winText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,45));
+        winText.setFill(Color.DARKMAGENTA);
 
         Label livesLost = new Label();
         if (ConfigurationScreen.startingLives != 1) {
@@ -54,6 +54,14 @@ public class GameOverScreen {
         yellowPacmanImgView.setFitWidth(250);
         yellowPacmanImgView.setPreserveRatio(true);
 
+        Image confetti = new Image(
+            new FileInputStream("src/main/resources/gt/cs2340/group65/pacman/confetti.gif"));
+        ImageView confettiImgView = new ImageView(confetti);
+        confettiImgView.setX(2);
+        confettiImgView.setY(2);
+        confettiImgView.setFitWidth(250);
+        confettiImgView.setFitHeight(100);
+        confettiImgView.setPreserveRatio(true);
 
         Button startOverButton = new Button("Start Over");
         startOverButton.setStyle("-fx-font-size:18");
@@ -76,7 +84,8 @@ public class GameOverScreen {
         vBox.setAlignment(Pos.CENTER);
         vBox.setPadding(new Insets(0, 50, 20, 50));
         vBox.setSpacing(10);
-        vBox.getChildren().add(gameOverText);
+        vBox.getChildren().add(confettiImgView);
+        vBox.getChildren().add(winText);
         vBox.getChildren().add(score);
         vBox.getChildren().add(livesLost);
         vBox.getChildren().add((pelletsLeft));
@@ -87,15 +96,12 @@ public class GameOverScreen {
         exitButtonHbox.getChildren().add(exitButton);
         exitButtonHbox.setAlignment(Pos.CENTER_RIGHT);
 
-
         BorderPane border = new BorderPane();
-        border.setPadding(new Insets(10, 20, 10, 20));
+        border.setPadding(new Insets(10, 10, 10, 10));
         border.setCenter(vBox);
         border.setBottom(exitButtonHbox);
-
 
         Scene scene = new Scene(border, 550, 400);
         App.setScene(scene);
     }
-
 }

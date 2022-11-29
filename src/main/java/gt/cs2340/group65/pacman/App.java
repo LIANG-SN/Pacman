@@ -20,6 +20,7 @@ public class App extends Application {
     private static ConfigurationScreen configurationScreen;
 
     private static GameOverScreen gameOverScreen;
+    private static WinScreen winScreen;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -29,6 +30,7 @@ public class App extends Application {
         welcomeScreen.display();
         configurationScreen = new ConfigurationScreen();
         gameOverScreen = new GameOverScreen();
+        winScreen = new WinScreen();
         stage.setTitle("PacMan Game");
         thisStage.show();
     }
@@ -59,6 +61,14 @@ public class App extends Application {
             gameOverScreen.start();
         } catch (IOException ioException) {
             System.out.println("io exception occurs during starting game over screen.");
+        }
+    }
+
+    public static void startWinScreen() {
+        try{
+            winScreen.start();
+        } catch (IOException ioException) {
+            System.out.println("io exception occurs during starting win screen.");
         }
     }
 
