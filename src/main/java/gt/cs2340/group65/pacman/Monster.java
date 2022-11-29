@@ -17,15 +17,17 @@ public class Monster extends ImageView {
     private Maze maze;
 
     private int stepSize = 3;
+    private int markedNumber;
 
 
-    public Monster(Maze maze, Coordinate startLocation, String imagePath, boolean spawned) {
+    public Monster(Maze maze, Coordinate startLocation, String imagePath, boolean spawned, int markedNumber) {
         super(imagePath);
         this.maze = maze;
         this.isSpawned = spawned;
         this.setPreserveRatio(false);
         this.setFitWidth(maze.getCellSize());
         this.setFitHeight(maze.getCellSize());
+        this.markedNumber = markedNumber;
         // temp location
         setX(startLocation.x + maze.getTranslateX());
         setY(startLocation.y + maze.getTranslateY());
@@ -106,5 +108,9 @@ public class Monster extends ImageView {
 
     public void setSpawned(boolean spawned) {
         this.isSpawned = spawned;
+    }
+
+    public int getMarkedNumber () {
+        return this.markedNumber;
     }
 }

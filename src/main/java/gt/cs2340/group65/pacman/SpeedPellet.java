@@ -2,7 +2,7 @@ package gt.cs2340.group65.pacman;
 
 public class SpeedPellet extends Pellet{
     public SpeedPellet(String imagePath, boolean specialPellet) {
-        // trick: use point = 2 to represent this attack pellet
+        // trick: use point = 2 to represent this speed pellet
         super(imagePath, specialPellet, 2);
     }
 }

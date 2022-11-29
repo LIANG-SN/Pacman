@@ -160,12 +160,14 @@ class Pacman extends ImageView {
     }
     private void initAttackAbility() {
         attackAbility = true;
+        invulnerable = true;
         setImage(attackUp);
         new Timer().schedule(
             new TimerTask() {
                 @Override
                 public void run() {
                     attackAbility = false;
+                    invulnerable = false;
                     setImage(pacmanUp);
                 }
             },
@@ -185,14 +187,17 @@ class Pacman extends ImageView {
         );
     }
 
-    public boolean checkCollision(Coordinate playerLocation) {
+    public int checkCollision(Coordinate playerLocation) {
+        int monsterIndex = maze.pacmanMonsterCollision(playerLocation);
         if (playerLocation != null) {
-            if (maze.pacmanMonsterCollision(playerLocation) && !isInvulnerable() && playerLifes > 0) {
+            if (monsterIndex != -1 && getAttackAbility() && isInvulnerable()) {
+                return monsterIndex;
+            } else if (monsterIndex != -1 && !isInvulnerable() && playerLifes > 0) {
                 playerLifes--;
-                return true;
+                return monsterIndex;
             }
         }
-        return false;
+        return -1;
     }
 
     public Coordinate getLocation() {
@@ -206,6 +211,10 @@ class Pacman extends ImageView {
 
     public int getScore() {
         return score;
+    }
+
+    public void addScore(int point) {
+        this.score += point;
     }
 
     public int getPlayerLifes() {
