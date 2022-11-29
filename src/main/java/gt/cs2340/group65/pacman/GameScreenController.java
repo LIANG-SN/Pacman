@@ -47,8 +47,7 @@ class GameScreenController {
         Coordinate pacmanStartLocation = new Coordinate(0, 0);
         Coordinate enemyStartLocation = new Coordinate(320, 320);
         maze = new Maze(600, 600, 15, 15, 0, topBarHeight,
-             pacmanStartLocation, enemyStartLocation);
-        maze.displayMaze(root);
+             root, pacmanStartLocation, enemyStartLocation);
         scene = new Scene(root, maze.getWidth(), maze.getHeight() + topBarHeight);
 //        App.setScene(scene);
         pacman = new Pacman(pacmanStartLocation, playerImagePath, playerLifes, maze, color, root);

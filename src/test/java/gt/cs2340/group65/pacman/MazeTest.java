@@ -8,27 +8,20 @@ import org.testfx.framework.junit.ApplicationTest;
 import static org.junit.Assert.*;
 
 public class MazeTest extends ApplicationTest{
-    GameScreenController gameScreenController;
     Maze maze;
     int numRows = 15;
     int numColumns = 15;
+    Coordinate pacmanStartLocation = new Coordinate(0, 0);
+    Coordinate enemyStartLocation = new Coordinate(320, 320);
 
     @Override
     public void start(Stage stage) throws Exception{
-        String color = "yellow";
-        String imagePath =
-            "src/main/resources/gt/cs2340/group65/pacman/" + color + "Pacman.png";
-        gameScreenController = new GameScreenController("name",
-            imagePath, 5, color);
-        stage.setScene(gameScreenController.getScene());
         stage.show();
-        Coordinate pacmanStartLocation = new Coordinate(0, 0);
-        Coordinate enemyStartLocation = new Coordinate(320, 320);
-        maze = new Maze(600, 600, numRows, numColumns, 0, 50,
-            pacmanStartLocation, enemyStartLocation);
     }
     @Test
     public void deadend() {
+        maze = new Maze(600, 600, numRows, numColumns, 0, 50,
+            new Group(), pacmanStartLocation, enemyStartLocation);
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
                 int count = 0;
@@ -63,9 +56,11 @@ public class MazeTest extends ApplicationTest{
     }
     @Test
     public void removePellet() {
+        maze = new Maze(600, 600, numRows, numColumns, 0, 50,
+            new Group(), pacmanStartLocation, enemyStartLocation);
         for (int i = 0; i < numRows; i++) {
             for (int j = 0; j < numColumns; j++) {
-                int p = maze.removePelle(gameScreenController.getRoot(),
+                int p = maze.removePelle(new Group(),
                     new Coordinate(i*maze.getCellSize(), j*maze.getCellSize()));
                 assertTrue(p == 0 || p == 10 || p == 100);
             }
@@ -74,12 +69,16 @@ public class MazeTest extends ApplicationTest{
     }
     @Test
     public void getHeight() {
+        maze = new Maze(600, 600, numRows, numColumns, 0, 50,
+            new Group(), pacmanStartLocation, enemyStartLocation);
         double h = maze.getHeight();
         assertEquals(600, h, 1e-3);
     }
 
     @Test
     public void getWidth() {
+        maze = new Maze(600, 600, numRows, numColumns, 0, 50,
+            new Group(), pacmanStartLocation, enemyStartLocation);
         double w = maze.getWidth();
         assertEquals(600, w, 1e-3);
     }
