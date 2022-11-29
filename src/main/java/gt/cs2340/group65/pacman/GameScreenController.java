@@ -208,7 +208,7 @@ class GameScreenController {
                     if (checkCollision != -1 && pacman.getAttackAbility()) {
                         int monsterIndex = monsters.get(checkCollision).getMarkedNumber();
                         monsters.remove(checkCollision);
-                        maze.removeMonster(root, checkCollision);
+                        pacman.addScore(maze.removeMonster(root, checkCollision));
                         blink.setToValue(1.0);
                         blink.playFrom(Duration.seconds(0.5));
                         countMonster--;
