@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
@@ -24,7 +25,8 @@ import java.io.IOException;
 public class WinScreen {
     public void start() throws IOException {
         Text winText = new Text("You won!!!");
-        winText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 45));
+        winText.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR,45));
+        winText.setFill(Color.DARKMAGENTA);
 
         Label livesLost = new Label();
         if (ConfigurationScreen.startingLives != 1) {
@@ -52,6 +54,15 @@ public class WinScreen {
         yellowPacmanImgView.setFitWidth(250);
         yellowPacmanImgView.setPreserveRatio(true);
 
+        Image confetti = new Image(
+            new FileInputStream("src/main/resources/gt/cs2340/group65/pacman/confetti.gif"));
+        ImageView confettiImgView = new ImageView(confetti);
+        confettiImgView.setX(2);
+        confettiImgView.setY(2);
+        confettiImgView.setFitWidth(250);
+        confettiImgView.setFitHeight(100);
+        confettiImgView.setPreserveRatio(true);
+
         Button startOverButton = new Button("Start Over");
         startOverButton.setStyle("-fx-font-size:18");
         startOverButton.setPrefSize(120, 40);
@@ -73,6 +84,7 @@ public class WinScreen {
         vBox.setAlignment(Pos.CENTER);
         vBox.setPadding(new Insets(0, 50, 20, 50));
         vBox.setSpacing(10);
+        vBox.getChildren().add(confettiImgView);
         vBox.getChildren().add(winText);
         vBox.getChildren().add(score);
         vBox.getChildren().add(livesLost);
