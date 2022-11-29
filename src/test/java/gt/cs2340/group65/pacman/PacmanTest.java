@@ -33,7 +33,7 @@ public class PacmanTest extends ApplicationTest {
     }
     @Test
     public void collision() {
-        boolean c = pacman.checkCollision(pacmanStartLocation);
-        assertFalse(c);
+        int c = pacman.checkCollision(pacmanStartLocation);
+        assertEquals(c, -1);
     }
 }
