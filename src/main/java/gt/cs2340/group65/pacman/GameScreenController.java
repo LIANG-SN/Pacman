@@ -25,7 +25,7 @@ class GameScreenController {
     private boolean keyLeft;
     private boolean keyRight;
     private AnimationTimer timer;
-    private Pacman pacman;
+    public static Pacman pacman;
     private Group root;
     private Scene scene;
     private GraphicsContext graphicsContext;
@@ -215,6 +215,10 @@ class GameScreenController {
                     playerLife.setText("Life: " + pacman.getPlayerLifes());
                     if (pacman.getPlayerLifes() <= 0) {
                         App.startGameOverScreen();
+                        timer.stop();
+                    }
+                    if (Maze.numPellets == 0) {
+                        App.startWinScreen();
                         timer.stop();
                     }
                 }

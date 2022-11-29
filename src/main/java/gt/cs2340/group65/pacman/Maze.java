@@ -17,6 +17,7 @@ public class Maze {
     private char[][] grid;
     private ImageView[][] imageViews;
     private Pellet[][] pellets;
+    public static int numPellets;
 
     private List<Monster> monsters;
 
@@ -141,6 +142,7 @@ public class Maze {
                         pellets[i][j].setX(j * getCellSize() + translateX);
                         pellets[i][j].setY(i * getCellSize() + translateY);
                         root.getChildren().add(pellets[i][j]);
+                        numPellets++;
                     } else {
                         pellets[i][j] = new Pellet(
                             "src/main/resources/gt/cs2340/group65/pacman/images/specialPelle.png", true, 100);
@@ -150,6 +152,7 @@ public class Maze {
                         pellets[i][j].setX(j * getCellSize() + translateX);
                         pellets[i][j].setY(i * getCellSize() + translateY);
                         root.getChildren().add(pellets[i][j]);
+                        numPellets++;
                     }
                 }
             }
@@ -193,6 +196,7 @@ public class Maze {
                 pellets[row][col].setFitHeight(getCellSize());
                 root.getChildren().remove(pellets[row][col]);
                 pellets[row][col] = null;
+                numPellets--;
             }
         }
         return point;
